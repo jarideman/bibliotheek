@@ -35,7 +35,7 @@ class CheckRol
                 }
             }
             
-            return redirect('/logout');
+            return redirect()->back();
         }
         else {
             return redirect('/');

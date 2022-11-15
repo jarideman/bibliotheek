@@ -15,6 +15,14 @@ use App\Http\Controllers\LoginController;
 */
 
 Route::get('/', [LoginController::class,'index']);
-Route::get('/login', [LoginController::class,'login']);
+Route::get('/login', [LoginController::class,'login'])->middleware('CheckLogin');
 Route::post('/login-user',[LoginController::class,'loginUser'])->name('login-user');
 Route::get('/logout',[LoginController::class,'logout']);
+
+Route::get('/gebruikers', [LoginController::class,'gebruikers'])->middleware('CheckRol:view_users');
+Route::get('/boeken', [LoginController::class,'boeken']);
+Route::get('/account', [LoginController::class,'account'])->middleware('CheckRol:view_account');
+Route::get('/zoeken', [LoginController::class,'zoeken']);
+
+
+

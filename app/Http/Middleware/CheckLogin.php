@@ -16,8 +16,8 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Session()->has('loginId') && (url('/')==$request->url() || url('registration')==$request->url())){
-            return redirect('CheckRol');
+        if(Session()->has('loginId')){
+            return redirect()->back();
         }
         return $next($request);
     }

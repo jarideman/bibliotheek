@@ -69,4 +69,48 @@ class LoginController extends Controller
             }
         }
     }
+
+    public function gebruikers(){
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('gebruikers', compact('account', 'user'));
+        }
+        else {
+            return view('gebruikers');
+        }
+    }
+
+    public function account(){
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('account', compact('account', 'user'));
+        }
+        else {
+            return view('account');
+        }
+    }
+
+    public function boeken(){
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('boeken', compact('account', 'user'));
+        }
+        else {
+            return view('boeken');
+        }
+    }
+
+    public function zoeken(){
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('zoeken', compact('account', 'user'));
+        }
+        else {
+            return view('zoeken');
+        }
+    }
 }
