@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Rollen;
 use App\Models\Permissions;
 use App\Models\Rol_perm;
+use App\Models\Books;
 use Session;
 use Hash;
 use Mail;
@@ -38,7 +39,7 @@ class LoginController extends Controller
         ]);
         $user = User::where('email', '=', $request->email)->first();
         if($user){
-            if($request->password == $user->password){
+            if(Hash::check($request->password, $user->password)){
                 $request->session()->put('loginId',$user->id);
                 $request->session()->put('rol', $user->rol_id);
                 return redirect('/');
@@ -93,13 +94,14 @@ class LoginController extends Controller
     }
 
     public function boeken(){
+        $boeken = Books::all();
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('view_users');
-            return view('boeken', compact('account', 'user'));
+            return view('boeken', compact('account', 'user', 'boeken'));
         }
         else {
-            return view('boeken');
+            return view('boeken', compact('boeken'));
         }
     }
 

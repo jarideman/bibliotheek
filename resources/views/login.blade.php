@@ -7,6 +7,9 @@
 </head>
 <body>
     @include('menu')
+        <style>
+        .login {text-decoration:underline !important;}
+    </style>
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4" style="margin-top:20px;">

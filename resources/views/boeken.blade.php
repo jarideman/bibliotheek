@@ -7,7 +7,27 @@
 </head>
 <body>
     @include('menu')
-
+        <style>
+        .boek {text-decoration:underline !important;}
+    </style>
+                    <table class="table">
+                    <thead>
+                        <th>Titel</th>
+                        <th>ISBN</th>
+                        <th>Schrijver</th>
+                        <th>Genre</th>
+                    </thead>
+                    <tbody>
+                    @foreach ($boeken as $data)
+                        <tr>
+                            <td>{{$data->title}}</td>
+                            <td>{{$data->isbn}}</td>
+                            <td>{{$data->writer}}</td>
+                            <td>{{$data->genre}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </html>

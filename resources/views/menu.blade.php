@@ -3,9 +3,9 @@
     <a href="/boeken" class="boek">Alle boeken</a>
     <a href="/zoeken" class="zoek">Zoeken</a>
     <a href="/login" class="login">Inloggen</a>
-    <a href="/logout" class="logout">Uitloggen</a>
     <a href="/account" class="account">Account</a>
     <a href="/gebruikers" class="gebruiker">Gebruikers</a>
+    <a href="/logout" class="logout">Uitloggen</a>
 </div>
     @if(Session::has('loginId')) 
         @if ($account == true) 
