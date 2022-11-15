@@ -1,1 +1,38 @@
+body {
+    background-color: #1E3339;
+    color:white;
+}
 
+.row {
+    --bs-gutter-x:0px !important;
+}
+
+.test {
+    border-bottom: 1px solid black;
+    height: 100px;
+    border-radius: 0 0 167% 31%;
+    background: white;
+    padding-top: 2%;
+}
+
+a:hover {
+    color: white;
+}
+
+a {
+    color:white;
+}
+
+.test a {
+    margin-left: 3%;
+    text-decoration: none;
+    color:black;
+}
+
+.account {
+    display:none;
+}
+
+.gebruiker {
+    display:none;
+}
