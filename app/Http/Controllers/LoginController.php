@@ -142,19 +142,36 @@ class LoginController extends Controller
         }
     }
 
-    public function boeken(){
-        $boeken = Books::all();
+    public function boeken(Request $request){
+        if ($request->schrijver) {
+            $schrijver = $request->schrijver;
+        } else {$schrijver = '';}
+
+        if ($request->isbn) {
+            $isbn = $request->isbn;
+        } else {$isbn = '';}
+
+        if ($request->titel) {
+            $titel = $request->titel;
+        } else {$titel = '';}
+
+        if ($request->genre) {
+            $genre = $request->genre;
+        } else {$genre = '';}
+
+        $boeken = Books::where('writer', 'LIKE', '%'.$schrijver.'%')->where('isbn', 'LIKE', '%'.$isbn.'%')->where('title', 'LIKE', '%'.$titel.'%')->where('genre', 'LIKE', '%'.$genre.'%')->get();
+        $genre = Books::distinct()->pluck('genre');
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('view_users');
-            return view('boeken', compact('account', 'user', 'boeken'));
+            return view('boeken', compact('account', 'user', 'boeken', 'genre'));
         }
         else {
-            return view('boeken', compact('boeken'));
+            return view('boeken', compact('boeken', 'genre'));
         }
     }
 
-    public function zoeken(){
+    public function zoeken(Request $request){
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('view_users');
@@ -167,7 +184,14 @@ class LoginController extends Controller
 
     public function view_boek(Request $request) {
         $info = Books::where('id', '=', $request->id)->first();
-        return view('boek', compact('info'));
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('boek', compact('account', 'user', 'info'));
+        }
+        else {
+            return view('boek', compact('info'));
+        }
     }
 
 }
