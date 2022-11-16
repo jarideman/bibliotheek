@@ -9,6 +9,7 @@
     @include('menu')
         <style>
         .boek {text-decoration:underline !important;}
+        tr:hover {cursor: pointer;}
     </style>
                     <table class="table">
                     <thead>
@@ -19,7 +20,7 @@
                     </thead>
                     <tbody>
                     @foreach ($boeken as $data)
-                        <tr>
+                        <tr onclick='location.href="boek/{{$data->id}}"' >
                             <td>{{$data->title}}</td>
                             <td>{{$data->isbn}}</td>
                             <td>{{$data->writer}}</td>

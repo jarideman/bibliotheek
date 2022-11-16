@@ -7,10 +7,11 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\CheckRolController;
 use App\Mail\NotifyMail;
 use App\Models\User;
-use App\Models\Rollen;
+use App\Models\Rols;
 use App\Models\Permissions;
 use App\Models\Rol_perm;
 use App\Models\Books;
+use App\Models\Notifications;
 use Session;
 use Hash;
 use Mail;
@@ -18,18 +19,28 @@ use Mail;
 class LoginController extends Controller
 {
     public function index(){
+        $date = date('d-m-Y');
+        $meldingen = Notifications::where('start_date', '<=', $date)->where('end_date', '>=', $date)->get();
+        $newBooks = Books::orderBy('purchase_date', 'DESC')->take(10)->get();
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('view_users');
-            return view('index', compact('account', 'user'));
+            return view('index', compact('account', 'user', 'meldingen', 'newBooks'));
         }
         else {
-            return view('index');
+            return view('index', compact('meldingen', 'newBooks'));
         }
     }
 
     public function login(){
-        return view('login');
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('login', compact('account', 'user'));
+        }
+        else {
+            return view('login');
+        }
     }
 
     public function loginUser(Request $request){
@@ -48,6 +59,44 @@ class LoginController extends Controller
             }
         }else {
             return back()->with('failed', 'This email is not registered');
+        }
+    }
+
+    public function registration(){
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('view_users');
+            return view('registration', compact('account', 'user'));
+        }
+        else {
+            return view("registration");
+        }
+    }
+
+    public function registerUser(Request $request){
+        $request->validate([
+            'naam'=>'required',
+            'achternaam'=>'required',
+            'adres'=>'required',
+            'postcode'=>'required',
+            'plaats'=>'required',
+            'email'=>'required|email|unique:users',
+            'password'=>'required|min:6'
+        ]);
+        $user = new User();
+        $user->name = $request->naam;
+        $user->middlename = $request->tussenvoegsels;
+        $user->surname = $request->achternaam;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->adres = $request->adres;
+        $user->postcode = $request->postcode;
+        $user->city = $request->plaats;
+        $res = $user->save();
+        if($res){
+            return back()->with('success','You have registered');
+        }else{
+            return back()->with('failed', 'Something went wrong');
         }
     }
 
@@ -115,4 +164,10 @@ class LoginController extends Controller
             return view('zoeken');
         }
     }
+
+    public function view_boek(Request $request) {
+        $info = Books::where('id', '=', $request->id)->first();
+        return view('boek', compact('info'));
+    }
+
 }
