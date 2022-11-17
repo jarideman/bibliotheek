@@ -48,8 +48,7 @@
             @endif
         </tr>
         @endforeach
-        {{ $reservations->links('pagination') }}
-        @else
+    @else
         <a href="account?type=reservations">Geleende boeken<img src='{{ asset('storage/images/switch.png') }}' class="switch"></a>
         <thead>
             <th>Boek</th>
@@ -70,10 +69,14 @@
             @endif
         </tr>
         @endforeach
-        {{ $lent_books->links('pagination') }}
         </tbody>
     @endif
     </table>
+    @if (request()->type == 'reservations')
+        {{ $reservations->links('pagination') }}
+    @else
+        {{ $lent_books->links('pagination') }}
+    @endif
     </div>
     
 

@@ -2,12 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\app\\Http\\Middleware",
     "\\app\\Models",
-    "\\database",
-    "\\database\\migrations",
     "\\resources",
-    "\\resources\\views",
-    "\\storage"
+    "\\resources\\views"
   ],
+  "SelectedNode": "\\app\\Http\\Controllers\\LoginController.php",
   "PreviewInSolutionExplorer": false
 }

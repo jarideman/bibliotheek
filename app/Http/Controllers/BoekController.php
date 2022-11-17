@@ -14,6 +14,7 @@ use App\Models\Books;
 use App\Models\Notifications;
 use App\Models\Lent_books;
 use App\Models\Reservations;
+use App\Models\Subscription;
 use Session;
 use Hash;
 use Mail;
@@ -52,13 +53,6 @@ class BoekController extends Controller
             $genre = $request->genre;
         } else {$genre = '';}
 
-        if (isset($_GET["page"])) {
-            $page = $_GET["page"];
-        }
-        else {
-            $page=1;
-        }
-
         $boeken = Books::where('writer', 'LIKE', '%'.$schrijver.'%')->where('isbn', 'LIKE', '%'.$isbn.'%')->where('title', 'LIKE', '%'.$titel.'%')->where('genre', 'LIKE', '%'.$genre.'%')->paginate(10)->withQueryString();
 
 
@@ -93,12 +87,69 @@ class BoekController extends Controller
             return redirect()->back();
         }
         if(Session()->has('loginId')) {
+            $reserveren = $this->CheckRol('reservate_book');
+            if ($reserveren == true) {
+                $reserveren = $this->reserveren();
+            }
+            else {
+                $reserveren = false;
+            }
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('view_users');
-            return view('boek', compact('account', 'user', 'info', 'status'));
+            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren'));
         }
         else {
             return view('boek', compact('info', 'status'));
         }
     }
+
+    public function reservate_boek(Request $request) {
+        if(Session()->has('loginId')) {
+            $reserveren = $this->CheckRol('reservate_book');
+            if ($reserveren == true) {
+                $reserveren = $this->reserveren();
+                if ($reserveren == true){
+                    $id = Session::get('loginId');
+                    $reservation = new Reservations();
+                    $reservation->book_id = $request->id;
+                    $reservation->user_id = $id;
+                    $reservation->reservation_date = date('d-m-Y');
+                    $res = $reservation->save();
+                    if($res){
+                        return back()->with('success','You have registered');
+                    }else{
+                        return back()->with('failed', 'Something went wrong');
+                    }
+                }
+                else {
+                    return redirect()->back();
+                }
+            }
+            else {
+                return redirect()->back();
+            }
+        }
+        else {
+            return redirect()->back();
+        }
+        
+    }
+
+    public function reserveren() {
+        $id = Session::get('loginId');
+        $lent_books = Lent_books::where('user_id', '=', $id)->count();
+        $reservations = Reservations::where('user_id', '=', $id)->count();
+        $books = $lent_books + $reservations;
+
+        $subscription = User::where('id', '=', $id)->pluck('subscription_id')->first();
+        $subscriptionCheck = Subscription::where('id', '=', $subscription)->pluck('books')->first();
+
+        if ($books < $subscriptionCheck) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
+
