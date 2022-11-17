@@ -10,9 +10,25 @@
     <style>
         .boek {text-decoration:underline !important;}
     </style>
-    {{$info->id}}
+    <div class="terug">
+        <a href="{{url()->previous()}}"><- Terug</a>
+    </div>
 
-
+                        <div class="fotobook">
+                            @if ($info->foto)
+                                <img src="{{$info->foto}}" class="bookfoto">
+                            @else
+                                <img src='{{ asset('storage/images/boek.png') }}' class="bookfoto">
+                            @endif
+                        </div>
+                        <div class="boekinfo">
+                            Titel: {{$info->title}}<br>
+                            ISBN: {{$info->isbn}}<br>
+                            Schrijver: {{$info->writer}}<br>
+                            Genre: {{$info->genre}}<br>
+                            Status: {{$status}}<br>
+                            Locatie: Hoornbeeckerland
+                        </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </html>

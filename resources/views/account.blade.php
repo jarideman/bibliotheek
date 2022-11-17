@@ -11,6 +11,73 @@
         .account {text-decoration:underline !important;}
     </style>
 
+    <div class="accountinfo">
+        <br>
+        <div class="profilepicture">
+            <img src='{{ asset('storage/images/user.png') }}' class="picture">
+        </div><br>
+        {{$info->name}}
+        {{$info->middlename}}
+        {{$info->surname}}<br>
+        {{$info->adres}}<br>
+        {{$info->city}}
+    </div>
+
+
+    <div class="accountboeken">
+        <table class="tableaccountboeken">
+
+    @if (request()->type == 'reservations')
+            <a href="account?type=lentbooks">Gereserveerde boeken<img src='{{ asset('storage/images/switch.png') }}' class="switch"></a>
+        <thead>
+            <th>Boek</th>
+            <th>Reserverings datum</th>
+            <th>Status</th>
+        </thead>
+        <tbody>
+        @foreach ($reservations as $reservation)
+        <tr>
+            
+            <td>{{$reservation->book->title}}</td>
+            <td>{{$reservation->reservation_date}}</td>
+            @php $test = $status->where('book_id', '=', $reservation->book->id)@endphp
+            @if ($test == '[]')
+                <td>Beschikbaar</td>
+            @else
+                <td>Uitgeleend</td>
+            @endif
+        </tr>
+        @endforeach
+        {{ $reservations->links('pagination') }}
+        @else
+        <a href="account?type=reservations">Geleende boeken<img src='{{ asset('storage/images/switch.png') }}' class="switch"></a>
+        <thead>
+            <th>Boek</th>
+            <th>Uitleen datum</th>
+            <th>Retour datum</th>
+            <th>Verlengen</th>
+        </thead>
+        <tbody>
+        @foreach ($lent_books as $lent_book)
+        <tr>
+            <td>{{$lent_book->book->title}}</td>
+            <td>{{$lent_book->lent_date}}</td>
+            <td>{{$lent_book->return_date}}</td>
+            @if ($lent_book->times_extended == 0)
+            <td><a href="verlengen" style="text-align:left !important">Verlengen</a></td>
+            @else
+                <td>Al verlengd</td>
+            @endif
+        </tr>
+        @endforeach
+        {{ $lent_books->links('pagination') }}
+        </tbody>
+    @endif
+    </table>
+    </div>
+    
+
+    
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </html>

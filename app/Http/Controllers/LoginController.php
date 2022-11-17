@@ -12,6 +12,8 @@ use App\Models\Permissions;
 use App\Models\Rol_perm;
 use App\Models\Books;
 use App\Models\Notifications;
+use App\Models\Lent_books;
+use App\Models\Reservations;
 use Session;
 use Hash;
 use Mail;
@@ -117,80 +119,6 @@ class LoginController extends Controller
             if($test2 == $permdesc){
                 return true;
             }
-        }
-    }
-
-    public function gebruikers(){
-        if(Session()->has('loginId')) {
-            $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('gebruikers', compact('account', 'user'));
-        }
-        else {
-            return view('gebruikers');
-        }
-    }
-
-    public function account(){
-        if(Session()->has('loginId')) {
-            $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('account', compact('account', 'user'));
-        }
-        else {
-            return view('account');
-        }
-    }
-
-    public function boeken(Request $request){
-        if ($request->schrijver) {
-            $schrijver = $request->schrijver;
-        } else {$schrijver = '';}
-
-        if ($request->isbn) {
-            $isbn = $request->isbn;
-        } else {$isbn = '';}
-
-        if ($request->titel) {
-            $titel = $request->titel;
-        } else {$titel = '';}
-
-        if ($request->genre) {
-            $genre = $request->genre;
-        } else {$genre = '';}
-
-        $boeken = Books::where('writer', 'LIKE', '%'.$schrijver.'%')->where('isbn', 'LIKE', '%'.$isbn.'%')->where('title', 'LIKE', '%'.$titel.'%')->where('genre', 'LIKE', '%'.$genre.'%')->get();
-        $genre = Books::distinct()->pluck('genre');
-        if(Session()->has('loginId')) {
-            $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('boeken', compact('account', 'user', 'boeken', 'genre'));
-        }
-        else {
-            return view('boeken', compact('boeken', 'genre'));
-        }
-    }
-
-    public function zoeken(Request $request){
-        if(Session()->has('loginId')) {
-            $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('zoeken', compact('account', 'user'));
-        }
-        else {
-            return view('zoeken');
-        }
-    }
-
-    public function view_boek(Request $request) {
-        $info = Books::where('id', '=', $request->id)->first();
-        if(Session()->has('loginId')) {
-            $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('boek', compact('account', 'user', 'info'));
-        }
-        else {
-            return view('boek', compact('info'));
         }
     }
 

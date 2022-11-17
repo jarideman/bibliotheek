@@ -1,7 +1,6 @@
 <div class="test">
     <a href="/" class="home">Home</a>
     <a href="/boeken" class="boek">Alle boeken</a>
-    <a href="/zoeken" class="zoek">Zoeken</a>
     <a href="/login" class="login">Inloggen</a>
     <a href="/account" class="account">Account</a>
     <a href="/gebruikers" class="gebruiker">Gebruikers</a>

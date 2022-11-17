@@ -20,6 +20,7 @@ class Books extends Migration
             $table->string('writer');
             $table->string('genre');
             $table->string('purchase_date');
+            $table->string('foto');
             $table->timestamps();
         });
     }

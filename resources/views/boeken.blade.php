@@ -16,13 +16,17 @@
             Alle boeken
             <div class="filters">
                 <form action="" id="sort" methode="get">
-                    <input type="text" class="form-control" placeholder="Schrijver" name="schrijver">
-                    <input type="text" class="form-control" placeholder="ISBN" name="isbn">
-                    <input type="text" class="form-control" placeholder="Titel" name="titel">
+                    <input type="text" class="form-control" placeholder="Titel" name="titel" value="{{request()->titel}}">
+                    <input type="text" class="form-control" placeholder="Schrijver" name="schrijver" value="{{request()->schrijver}}">
+                    <input type="text" class="form-control" placeholder="ISBN" name="isbn" value="{{request()->isbn}}">
                     <select class="form-select" name="genre">
                         <option value="" disabled selected>Genre</option>
                         @foreach ($genre as $genre)
-                            <option value="{{$genre}}">{{$genre}}</option>
+                            @if (request()->genre == $genre)
+                                <option value="{{$genre}}"selected>{{$genre}}</option><br>
+                            @else 
+                                <option value="{{$genre}}">{{$genre}}</option><br>
+                            @endif
                         @endforeach
                     </select>
                     <input type="submit" value="Zoeken">
@@ -48,6 +52,7 @@
                 </tr>
             @endforeach
         </table>
+        {{ $boeken->links('pagination') }}
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>

@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\BoekController;
+use App\Http\Controllers\GebruikerController;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +24,13 @@ Route::get('/registration', [LoginController::class,'registration']);
 Route::post('/register-user',[LoginController::class, 'registerUser'])->name('register-user');
 Route::get('/logout',[LoginController::class,'logout']);
 
-Route::get('/gebruikers', [LoginController::class,'gebruikers'])->middleware('CheckRol:view_users');
-Route::get('/boeken', [LoginController::class,'boeken']);
-Route::get('/account', [LoginController::class,'account'])->middleware('CheckRol:view_account');
-Route::get('/zoeken', [LoginController::class,'zoeken']);
+Route::get('/gebruikers', [GebruikerController::class,'gebruikers'])->middleware('CheckRol:view_users');
 
-Route::get('/boek/{id}',[LoginController::class,'view_boek']);
+Route::get('/boeken', [BoekController::class,'boeken']);
+Route::get('/boek/{id}',[BoekController::class,'view_boek']);
+
+Route::get('/account', [AccountController::class,'account'])->middleware('CheckRol:view_account');
+
 
 
 
