@@ -17,6 +17,7 @@ use App\Models\Reservations;
 use Session;
 use Hash;
 use Mail;
+use Carbon\Carbon;
 
 class AccountController extends Controller
 {
@@ -45,5 +46,20 @@ class AccountController extends Controller
         $account = $this->CheckRol('view_account');
         $user = $this->CheckRol('view_users');
         return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info'));
+    }
+
+    public function verlengen(Request $request) {
+        $book_id = $request->id;
+        $id = Session::get('loginId');
+        $book = Lent_books::where('book_id', '=', $book_id)->where('user_id', '=', $id)->first();
+
+        $carbon = new Carbon($book->return_date);
+        $return_date = $book->return_date;
+        $new_return_date = $carbon->addDays(7)->format('d-m-Y');
+        echo $return_date;
+        echo $new_return_date;
+
+        Lent_books::where('book_id', '=', $book_id)->first()->update(['return_date' => $new_return_date, 'times_extended' => 1]);
+        return redirect('account')->with('success','Boek verlengd');
     }
 }

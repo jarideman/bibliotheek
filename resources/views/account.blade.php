@@ -11,6 +11,18 @@
         .account {text-decoration:underline !important;}
     </style>
 
+    @if(Session::has('success'))
+        <style>
+            .overlay {visibility:visible !important; opacity: 1;}
+        </style>
+        <div id="popup1" class="overlay">
+	        <div class="popup">
+		        <h2>{{Session::get('success')}}</h2>
+		    <a class="close" href="">&times;</a>
+	        </div>
+        </div>
+    @endif
+
     <div class="accountinfo">
         <br>
         <div class="profilepicture">
@@ -63,7 +75,7 @@
             <td>{{$lent_book->lent_date}}</td>
             <td>{{$lent_book->return_date}}</td>
             @if ($lent_book->times_extended == 0)
-            <td><a href="verlengen" style="text-align:left !important">Verlengen</a></td>
+            <td><a href="verlengen/{{$lent_book->book->id}}" style="text-align:left !important">Verlengen</a></td>
             @else
                 <td>Al verlengd</td>
             @endif
@@ -78,8 +90,6 @@
         {{ $lent_books->links('pagination') }}
     @endif
     </div>
-    
-
     
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>

@@ -116,9 +116,7 @@ class BoekController extends Controller
                     $reservation->reservation_date = date('d-m-Y');
                     $res = $reservation->save();
                     if($res){
-                        return back()->with('success','You have registered');
-                    }else{
-                        return back()->with('failed', 'Something went wrong');
+                        return redirect()->back()->with('success','Boek gereserveerd');
                     }
                 }
                 else {

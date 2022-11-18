@@ -31,7 +31,7 @@ Route::get('/boek/{id}',[BoekController::class,'view_boek']);
 Route::get('/boek/reserveren/{id}',[BoekController::class,'reservate_boek']);
 
 Route::get('/account', [AccountController::class,'account'])->middleware('CheckRol:view_account');
-
+Route::get('/verlengen/{id}', [AccountController::class,'verlengen'])->middleware('CheckRol:view_account');
 
 
 

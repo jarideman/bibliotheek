@@ -11,13 +11,18 @@
         .boek {text-decoration:underline !important;}
     </style>
     <div class="terug">
-        <a href="{{url()->previous()}}"><- Terug</a>
+        <a href="../boeken"><- Terug</a>
     </div>
     @if(Session::has('success'))
-        <div class="alert alert-success">{{Session::get('success')}}</div>
-    @endif
-    @if(Session::has('failed'))
-        <div class="alert alert-danger">{{Session::get('failed')}}</div>
+        <style>
+            .overlay {visibility:visible !important; opacity: 1;}
+        </style>
+        <div id="popup1" class="overlay">
+	        <div class="popup">
+		        <h2>{{Session::get('success')}}</h2>
+		    <a class="close" href="">&times;</a>
+	        </div>
+        </div>
     @endif
     <div class="fotobook">
         @if ($info->foto)
