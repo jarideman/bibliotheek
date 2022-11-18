@@ -3,12 +3,11 @@
     "",
     "\\app",
     "\\app\\Http",
-    "\\app\\Http\\Controllers",
     "\\app\\Http\\Middleware",
     "\\app\\Models",
     "\\resources",
     "\\resources\\views"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\LoginController.php",
+  "SelectedNode": "\\resources\\views\\index.blade.php",
   "PreviewInSolutionExplorer": false
 }

@@ -18,6 +18,7 @@ use App\Models\Subscription;
 use Session;
 use Hash;
 use Mail;
+use Carbon\Carbon;
 
 class BoekController extends Controller
 {
@@ -82,6 +83,11 @@ class BoekController extends Controller
         }
         else {
             $status = 'Gereserveerd';
+            $check = Lent_books::where('book_id', '=', $request->id)->count();
+            if ($check == 0) {}
+            else {
+                $status = 'Uitgeleend & Gereserveerd';
+            }
         }
         if ($count == 0) {
             return redirect()->back();
@@ -89,14 +95,16 @@ class BoekController extends Controller
         if(Session()->has('loginId')) {
             $reserveren = $this->CheckRol('reservate_book');
             if ($reserveren == true) {
-                $reserveren = $this->reserveren();
+                $reserveren = $this->reserveren(Session::get('loginId'));
             }
             else {
                 $reserveren = false;
             }
+            $reserverenKlant = $this->CheckRol('reservate_book_client');
+            $uitlenen = $this->CheckRol('lent_book');
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('view_users');
-            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren'));
+            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen'));
         }
         else {
             return view('boek', compact('info', 'status'));
@@ -105,22 +113,29 @@ class BoekController extends Controller
 
     public function reservate_boek(Request $request) {
         if(Session()->has('loginId')) {
+            $id = Session::get('loginId');
             $reserveren = $this->CheckRol('reservate_book');
             if ($reserveren == true) {
-                $reserveren = $this->reserveren();
-                if ($reserveren == true){
-                    $id = Session::get('loginId');
-                    $reservation = new Reservations();
-                    $reservation->book_id = $request->id;
-                    $reservation->user_id = $id;
-                    $reservation->reservation_date = date('d-m-Y');
-                    $res = $reservation->save();
-                    if($res){
-                        return redirect()->back()->with('success','Boek gereserveerd');
-                    }
+                $uitgeleend = Lent_books::where('book_id', '=', $request->id)->where('user_id', '=', $id)->first();
+                if ($uitgeleend) {
+                    return redirect()->back()->with('success','U leent dit boek al');
                 }
                 else {
-                    return redirect()->back();
+                    $reserveren = $this->reserveren($id);
+                    if ($reserveren == true){
+                        $id = Session::get('loginId');
+                        $reservation = new Reservations();
+                        $reservation->book_id = $request->id;
+                        $reservation->user_id = $id;
+                        $reservation->reservation_date = date('d-m-Y');
+                        $res = $reservation->save();
+                        if($res){
+                            return redirect()->back()->with('success','Boek gereserveerd');
+                        }
+                    }
+                    else {
+                        return redirect()->back();
+                    }
                 }
             }
             else {
@@ -133,8 +148,7 @@ class BoekController extends Controller
         
     }
 
-    public function reserveren() {
-        $id = Session::get('loginId');
+    public function reserveren($id) {
         $lent_books = Lent_books::where('user_id', '=', $id)->count();
         $reservations = Reservations::where('user_id', '=', $id)->count();
         $books = $lent_books + $reservations;
@@ -146,6 +160,119 @@ class BoekController extends Controller
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function reservate_book_client(Request $request) {
+        $request->validate([
+            'klant_id'=>'required',
+            'book_id'=>'required'
+        ]);
+        $uitgeleend = Lent_books::where('book_id', '=', $request->book_id)->where('user_id', '=', $request->klant_id)->first();
+        if ($uitgeleend) {
+            return redirect()->back()->with('success','Klant leent boek al');
+        }
+        else {
+            $check = Reservations::where('book_id', '=', $request->book_id)->first();
+            if($check){
+                return redirect()->back()->with('success','Boek is al gereserveerd');
+            }
+            else {
+                $klant = User::where('id', '=', $request->klant_id)->first();
+                if ($klant) {
+                    $id = $klant->id;
+                    $book_id = $request->book_id;
+                    $reserveren = $this->reserveren($id);
+                    if ($reserveren == true){
+                        $reservation = new Reservations();
+                        $reservation->book_id = $book_id;
+                        $reservation->user_id = $id;
+                        $reservation->reservation_date = date('d-m-Y');
+                        $res = $reservation->save();
+                        if($res){
+                            return redirect()->back()->with('success','Boek gereserveerd');
+                        }
+                    }
+                    else {
+                        return redirect()->back()->with('success', 'Maximaal aantal boeken bereikt');
+                    }
+                }
+                else {
+                    return redirect()->back()->with('success','Gebruiker bestaat niet');
+                }
+            }
+        }
+    }
+
+    public function uitlenen(Request $request){
+        $request->validate([
+            'klant_id'=>'required',
+            'book_id'=>'required'
+        ]);
+        $check = Lent_books::where('book_id', '=', $request->book_id)->first();
+        if($check){
+            return redirect()->back()->with('success','Boek is al uitgeleend');
+        }
+        else {
+            $klant = User::where('id', '=', $request->klant_id)->first();
+            if ($klant) {
+                $id = $klant->id;
+                $book_id = $request->book_id;
+
+                $lent_books = Lent_books::where('user_id', '=', $id)->count();
+                $reservations = Reservations::where('user_id', '=', $id)->count();
+                $books = $lent_books + $reservations;
+
+                $subscription = User::where('id', '=', $id)->pluck('subscription_id')->first();
+                $subscriptionCheck = Subscription::where('id', '=', $subscription)->pluck('books')->first();
+                $books =  --$books;
+                if ($books < $subscriptionCheck) {
+                    $boeken = true;
+                } else {
+                    $boeken = false;
+                }
+                if ($boeken == true){
+                    $reservations = Reservations::where('book_id', '=', $request->book_id)->first();
+                    if ($reservations) {
+                        $checkReservations = Reservations::where('book_id', '=', $request->book_id)->where('user_id', '=', $request->klant_id)->first();
+                        if ($checkReservations) {
+                            $date = date('d-m-Y');
+                            $carbon = new Carbon($date);
+                            $lent_book = new Lent_books();
+                            $lent_book->book_id = $book_id;
+                            $lent_book->user_id = $id;
+                            $lent_book->lent_date = $date;
+                            $lent_book->return_date = $carbon->addDays(28)->format('d-m-Y');
+                            $res = $lent_book->save();
+                            if($res){
+                                Reservations::where('book_id', '=', $request->book_id)->where('user_id', '=', $request->klant_id)->first()->delete();
+                                return redirect()->back()->with('success','Boek uitgeleend');
+                            }
+                        }
+                        else {
+                            return redirect()->back()->with('success', 'Boek is al gereserveerd');
+                        }
+                    }
+                    else {
+                        $date = date('d-m-Y');
+                        $lent_book = new Lent_books();
+                        $lent_book->book_id = $book_id;
+                        $lent_book->user_id = $id;
+                        $lent_book->lent_date = $date;
+                        $lent_book->return_date = $date->addDays(28)->format('d-m-Y');
+                        $res = $lent_book->save();
+                        if($res){
+                                return redirect()->back()->with('success','Boek uitgeleend');
+                        }
+                    }
+                }
+                else {
+                    return redirect()->back()->with('success', 'Maximaal aantal boeken bereikt');
+                }
+            }
+            else {
+                return redirect()->back()->with('success','Gebruiker bestaat niet');
+            }
         }
     }
 }

@@ -14,10 +14,14 @@
 <div class="rightbar">
     <div class="meldingen">
         <b>Meldingen</b><br>
-        @foreach ($meldingen as $meldingen)
-            {{$meldingen->start_date}}:
-            {{$meldingen->message}}
-        @endforeach
+        @if ($meldingen == '[]')
+            Er zijn momenteel geen meldingen
+        @else
+            @foreach ($meldingen as $meldingen)
+                {{$meldingen->start_date}}:
+                {{$meldingen->message}}
+            @endforeach
+        @endif
     </div>
 
     <div class="newbooks">

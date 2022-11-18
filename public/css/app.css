@@ -381,3 +381,43 @@ ul.pagination.justify-content-center {
     overflow: auto;
 }
 
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.reserverenform {
+    text-align: center;
+    width: 200px;
+}
+
+.reserverenform input[type="text"] {
+    width:150px;
+    border-radius:20px;
+    text-align:center;
+}
+
+.reserverenform input[type="submit"] {
+    border-radius:20px;
+    margin-top:20px;
+}
+
+.content {
+    border: 2px solid black;
+    width: 200px;
+    background: white;
+    border-bottom-left-radius: 20px;
+    margin-top: -28px;
+    border-bottom-right-radius: 20px;
+    padding-top: 50px;
+    display: none;
+    overflow: hidden;
+}
+

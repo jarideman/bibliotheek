@@ -29,6 +29,9 @@ Route::get('/gebruikers', [GebruikerController::class,'gebruikers'])->middleware
 Route::get('/boeken', [BoekController::class,'boeken']);
 Route::get('/boek/{id}',[BoekController::class,'view_boek']);
 Route::get('/boek/reserveren/{id}',[BoekController::class,'reservate_boek']);
+Route::post('/boek/reserverenklant',[BoekController::class,'reservate_book_client']);
+Route::post('/boek/uitlenen',[BoekController::class,'uitlenen']);
+
 
 Route::get('/account', [AccountController::class,'account'])->middleware('CheckRol:view_account');
 Route::get('/verlengen/{id}', [AccountController::class,'verlengen'])->middleware('CheckRol:view_account');
