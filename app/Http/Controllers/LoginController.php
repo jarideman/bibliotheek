@@ -26,8 +26,9 @@ class LoginController extends Controller
         $newBooks = Books::orderBy('purchase_date', 'DESC')->take(10)->get();
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('index', compact('account', 'user', 'meldingen', 'newBooks'));
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            return view('index', compact('account', 'user', 'meldingen', 'newBooks', 'return'));
         }
         else {
             return view('index', compact('meldingen', 'newBooks'));
@@ -37,8 +38,9 @@ class LoginController extends Controller
     public function login(){
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('login', compact('account', 'user'));
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            return view('login', compact('account', 'user', 'return'));
         }
         else {
             return view('login');
@@ -67,8 +69,9 @@ class LoginController extends Controller
     public function registration(){
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('registration', compact('account', 'user'));
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            return view('registration', compact('account', 'user', 'return'));
         }
         else {
             return view("registration");

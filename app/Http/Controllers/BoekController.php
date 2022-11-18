@@ -60,8 +60,9 @@ class BoekController extends Controller
         $genre = Books::distinct()->pluck('genre');
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('boeken', compact('account', 'user', 'boeken', 'genre'));
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            return view('boeken', compact('account', 'user', 'boeken', 'genre', 'return'));
         }
         else {
             return view('boeken', compact('boeken', 'genre'));
@@ -103,8 +104,9 @@ class BoekController extends Controller
             $reserverenKlant = $this->CheckRol('reservate_book_client');
             $uitlenen = $this->CheckRol('lent_book');
             $account = $this->CheckRol('view_account');
-            $user = $this->CheckRol('view_users');
-            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen'));
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen', 'return'));
         }
         else {
             return view('boek', compact('info', 'status'));
@@ -273,6 +275,27 @@ class BoekController extends Controller
             else {
                 return redirect()->back()->with('success','Gebruiker bestaat niet');
             }
+        }
+    }
+
+    public function boek_terug_brengen(Request $request) {
+        $account = $this->CheckRol('view_account');
+        $user = $this->CheckRol('admin');
+        $return = $this->CheckRol('return_book');
+        if (isset($request->user_id)) {
+            $id = $request->user_id;
+            $gebruiker = User::where('id', '=', $id)->first();
+            if ($gebruiker) {
+                $name = $gebruiker->name;
+                $boeken = Lent_books::where('user_id', '=', $id)->with('book')->get();
+                return view('return_book', compact('account', 'user','return', 'name', 'boeken'));
+            }
+            else {
+                return redirect()->back()->with('success', 'Gebruiker niet gevonden');
+            }
+        }
+        else {
+            return view('return_book', compact('account', 'user','return'));
         }
     }
 }

@@ -44,8 +44,9 @@ class AccountController extends Controller
         $status = Lent_books::all();
         $lent_books = Lent_books::where('user_id', '=', $id)->with('book')->paginate(5)->withQueryString();
         $account = $this->CheckRol('view_account');
-        $user = $this->CheckRol('view_users');
-        return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info'));
+        $user = $this->CheckRol('admin');
+        $return = $this->CheckRol('return_book');
+        return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info', 'return'));
     }
 
     public function verlengen(Request $request) {

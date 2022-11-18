@@ -18,7 +18,7 @@ use Session;
 use Hash;
 use Mail;
 
-class GebruikerController extends Controller
+class BeheerController extends Controller
 {
     public function CheckRol($permdesc){
         $data = User::where('id', '=',Session::get('loginId'))->first();
@@ -35,15 +35,15 @@ class GebruikerController extends Controller
         }
     }
 
-    public function gebruikers(){
+    public function beheer(){
         if(Session()->has('loginId')) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            return view('gebruikers', compact('account', 'user', 'return'));
+            return view('beheer', compact('account', 'user', 'return'));
         }
         else {
-            return view('gebruikers');
+            return view('beheer');
         }
     }
 }

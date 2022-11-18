@@ -8,7 +8,7 @@
 <body>
     @include('menu')
         <style>
-        .gebruiker {text-decoration:underline !important;}
+        .beheer {text-decoration:underline !important;}
     </style>
 
 </body>

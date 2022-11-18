@@ -33,7 +33,11 @@ a {
     display:none;
 }
 
-.gebruiker {
+.beheer {
+    display:none;
+}
+
+.return {
     display:none;
 }
 
@@ -421,3 +425,20 @@ ul.pagination.justify-content-center {
     overflow: hidden;
 }
 
+.returnform {
+    text-align: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+    .returnform form#myForm {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        color: black;
+    }
