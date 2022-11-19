@@ -16,14 +16,14 @@
     <div class="returnform">
         <h2 style="color:black">Boek terug brengen</h2>
         <form action='' method="get" id="myForm" class="reserverenform">
-            <input type="text" placeholder="Klant id" value='@if (isset($name)) {{$name}} @endif' name="user_id"><br>
+            <input type="text" placeholder="Klant id" value='@if (isset($name)){{$name}}@endif' name="user_id"><br>
             @if (isset($name))
                 @if (isset($boeken))
                     @foreach ($boeken as $boeken)
-                        {{$boeken->book->title}}<br>
+                        <input type="checkbox" value='{{$boeken->book->id}}' name='boek[]'> {{$boeken->book->title}}</input><br>
                     @endforeach
                     <style>.submit {display:none;}</style>
-                    <input type="submit" value="Zoek" class="returnbook">
+                    <input type="submit" value="Terug brengen" class="returnbook">
                 @else
                     Geen geleende boeken
                 @endif

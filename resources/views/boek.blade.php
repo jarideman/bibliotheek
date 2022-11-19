@@ -7,6 +7,7 @@
 </head>
 <body>
     @include('menu')
+
     <style>
         .boek {text-decoration:underline !important;}
     </style>
@@ -31,8 +32,10 @@
             Locatie: Hoornbeeckerland
             <div class="reserveren">
                 @if ($status == 'Beschikbaar' or $status == 'Uitgeleend')
-                    @if ($reserveren == true)    
-                        <button class="reserverenbutton" onclick="location.href='reserveren/{{$info->id}}'">Reserveren</button>
+                    @if ($reserveren == true)
+                        @if (!$uitgeleend)
+                            <button class="reserverenbutton" onclick="location.href='/boek/reserveren/{{$info->id}}'">Reserveren</button>
+                        @endif
                     @endif
                     @if ($reserverenKlant == true)
                         @if ($status == 'Uitgeleend')

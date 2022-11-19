@@ -20,7 +20,8 @@
         {{$info->middlename}}
         {{$info->surname}}<br>
         {{$info->adres}}<br>
-        {{$info->city}}
+        {{$info->city}}<br>
+        Abbonement: {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br>
     </div>
 
 

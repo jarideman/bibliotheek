@@ -23,7 +23,7 @@ use Carbon\Carbon;
 class BoekController extends Controller
 {
     public function CheckRol($permdesc){
-        $data = User::where('id', '=',Session::get('loginId'))->first();
+        $data = User::where('id', '=', Session::get('loginId'))->first();
         $rol_id = $data->rol_id;
         $permissions = Permissions::all()->pluck('perm_id');
         foreach ($permissions as $permissions) {
@@ -94,9 +94,11 @@ class BoekController extends Controller
             return redirect()->back();
         }
         if(Session()->has('loginId')) {
+            $id = Session::get('loginId');
+            $uitgeleend = Lent_books::where('book_id', '=', $request->id)->where('user_id', '=', $id)->first();
             $reserveren = $this->CheckRol('reservate_book');
             if ($reserveren == true) {
-                $reserveren = $this->reserveren(Session::get('loginId'));
+                $reserveren = $this->reserveren($id);
             }
             else {
                 $reserveren = false;
@@ -106,7 +108,7 @@ class BoekController extends Controller
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen', 'return'));
+            return view('boek', compact('account', 'user', 'info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen', 'return', 'uitgeleend'));
         }
         else {
             return view('boek', compact('info', 'status'));
@@ -117,10 +119,12 @@ class BoekController extends Controller
         if(Session()->has('loginId')) {
             $id = Session::get('loginId');
             $reserveren = $this->CheckRol('reservate_book');
+
             if ($reserveren == true) {
                 $uitgeleend = Lent_books::where('book_id', '=', $request->id)->where('user_id', '=', $id)->first();
+ 
                 if ($uitgeleend) {
-                    return redirect()->back()->with('success','U leent dit boek al');
+                    return redirect()->back()->with('success', 'U leent dit boek al');
                 }
                 else {
                     $reserveren = $this->reserveren($id);
@@ -257,11 +261,12 @@ class BoekController extends Controller
                     }
                     else {
                         $date = date('d-m-Y');
+                        $carbon = new Carbon($date);
                         $lent_book = new Lent_books();
                         $lent_book->book_id = $book_id;
                         $lent_book->user_id = $id;
                         $lent_book->lent_date = $date;
-                        $lent_book->return_date = $date->addDays(28)->format('d-m-Y');
+                        $lent_book->return_date = $carbon->addDays(28)->format('d-m-Y');
                         $res = $lent_book->save();
                         if($res){
                                 return redirect()->back()->with('success','Boek uitgeleend');
@@ -286,9 +291,22 @@ class BoekController extends Controller
             $id = $request->user_id;
             $gebruiker = User::where('id', '=', $id)->first();
             if ($gebruiker) {
-                $name = $gebruiker->name;
-                $boeken = Lent_books::where('user_id', '=', $id)->with('book')->get();
-                return view('return_book', compact('account', 'user','return', 'name', 'boeken'));
+                if (isset($request->boek)) {
+                    foreach ($request->boek as $boek) {
+                        echo $boek;
+                        $lent_book = Lent_books::where('user_id', '=', $id)->where('book_id', '=', $boek)->first();
+                        if ($lent_book) {
+                            Lent_books::where('user_id', '=', $id)->where('book_id', '=', $boek)->delete();
+                        }
+                        else {}
+                    }
+                    return redirect()->back()->with('success', 'Boeken terug gebracht');
+                }
+                else {
+                    $name = $gebruiker->id;
+                    $boeken = Lent_books::where('user_id', '=', $id)->with('book')->get();
+                    return view('return_book', compact('account', 'user','return', 'name', 'boeken'));
+                }
             }
             else {
                 return redirect()->back()->with('success', 'Gebruiker niet gevonden');

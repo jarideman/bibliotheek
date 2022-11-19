@@ -28,14 +28,14 @@ Route::get('/beheer', [BeheerController::class,'beheer'])->middleware('CheckRol:
 
 Route::get('/boeken', [BoekController::class,'boeken']);
 Route::get('/boek/{id}',[BoekController::class,'view_boek']);
-Route::get('/boek/reserveren/{id}',[BoekController::class,'reservate_boek'])->middleware('CheckRol:reservate_boek');
+Route::get('/boek/reserveren/{id}',[BoekController::class,'reservate_boek'])->middleware('CheckRol:reservate_book');
 Route::post('/boek/reserverenklant',[BoekController::class,'reservate_book_client'])->middleware('CheckRol:reservate_book_client');
 Route::post('/boek/uitlenen',[BoekController::class,'uitlenen'])->middleware('CheckRol:lent_book');
 Route::get('/terugbrengen',[BoekController::class,'boek_terug_brengen'])->middleware('CheckRol:return_book');
 
-
 Route::get('/account', [AccountController::class,'account'])->middleware('CheckRol:view_account');
 Route::get('/verlengen/{id}', [AccountController::class,'verlengen'])->middleware('CheckRol:view_account');
+Route::get('/abbonementwijzigen',[AccountController::class,'abbonementwijzigen']);
 
 
 

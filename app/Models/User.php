@@ -23,4 +23,8 @@ class User extends Authenticatable
         'city',
         'rol_id',
     ];
+
+    public function subscription(){
+        return $this->hasMany(Subscription::class, 'id');
+    }
 }

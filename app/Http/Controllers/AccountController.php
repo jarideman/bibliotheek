@@ -14,6 +14,7 @@ use App\Models\Books;
 use App\Models\Notifications;
 use App\Models\Lent_books;
 use App\Models\Reservations;
+use App\Models\Subscription;
 use Session;
 use Hash;
 use Mail;
@@ -41,12 +42,17 @@ class AccountController extends Controller
         $info = User::where('id', '=', $id)->first();
         $boeken = Books::all();
         $reservations = Reservations::where('user_id', '=', $id)->with('book')->with('book.uitlenen')->paginate(5)->withQueryString();
+
         $status = Lent_books::all();
         $lent_books = Lent_books::where('user_id', '=', $id)->with('book')->paginate(5)->withQueryString();
         $account = $this->CheckRol('view_account');
         $user = $this->CheckRol('admin');
         $return = $this->CheckRol('return_book');
-        return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info', 'return'));
+
+        $subscription_id = $info->subscription_id;
+        $abbonement = Subscription::where('id', '=', $subscription_id)->first();
+
+        return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info', 'return', 'abbonement'));
     }
 
     public function verlengen(Request $request) {
@@ -62,5 +68,22 @@ class AccountController extends Controller
 
         Lent_books::where('book_id', '=', $book_id)->first()->update(['return_date' => $new_return_date, 'times_extended' => 1]);
         return redirect('account')->with('success','Boek verlengd');
+    }
+
+    public function abbonementwijzigen() {
+        if(Session()->has('loginId')) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            $id = Session::get('loginId');
+            $info = User::where('id', '=', $id)->first();
+            $subscription_id = $info->subscription_id;
+            $abbonement = Subscription::where('id', '=', $subscription_id)->first();
+            $abbonementen = Subscription::all();
+            return view('abbonementen', compact('account', 'user', 'return', 'abbonement', 'abbonementen'));
+        }
+        else {
+            return redirect()->back();
+        }
     }
 }

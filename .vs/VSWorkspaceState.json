@@ -5,10 +5,9 @@
     "\\app\\Http",
     "\\app\\Http\\Controllers",
     "\\app\\Models",
-    "\\public\\css",
     "\\resources",
     "\\resources\\views"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\AccountController.php",
+  "SelectedNode": "\\resources\\views\\account.blade.php",
   "PreviewInSolutionExplorer": false
 }
