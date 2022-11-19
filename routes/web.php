@@ -35,7 +35,9 @@ Route::get('/terugbrengen',[BoekController::class,'boek_terug_brengen'])->middle
 
 Route::get('/account', [AccountController::class,'account'])->middleware('CheckRol:view_account');
 Route::get('/verlengen/{id}', [AccountController::class,'verlengen'])->middleware('CheckRol:view_account');
+Route::get('/cancel/{id}', [AccountController::class,'cancel'])->middleware('CheckRol:view_account');
 Route::get('/abbonementwijzigen',[AccountController::class,'abbonementwijzigen']);
+Route::get('/afsluiten',[AccountController::class,'afsluiten']);
 
 
 

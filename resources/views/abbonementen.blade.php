@@ -10,24 +10,32 @@
         <style>
         .account {text-decoration:underline !important;}
     </style>
+    <div class="terug">
+        <a href="/account"><- Terug</a>
+    </div>
+    <form action='afsluiten' method='get'>
     <div class="abbonementen">
-    <div class="count">{{$i=1}}</div>
+        <div class="count">{{$i=1}}</div>
         @foreach ($abbonementen as $abbonementen)
             <div class="abbonement">
             @if ($abbonementen->id == $abbonement->id)
                 <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name" checked><label for="checkbox{{$i}}">
                     <div class="abbonementinfo">
-                        {{$abbonementen->name}}<br>
-                        Prijs van het abbonement: €{{$abbonementen->price}}<br>
-                        Max boeken lenen/reserveren: {{$abbonementen->books}}
+                        <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
+                        {{$abbonementen->text}}<br><br>
+                        <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} er maand</li><br>
+                        <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
+                        <div class="selected">Geselecteerd</div>
                     </div>
                 </label>
             @else 
                 <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name"><label for="checkbox{{$i}}">
                     <div class="abbonementinfo">
-                        {{$abbonementen->name}}<br>
-                        Prijs van het abbonement: €{{$abbonementen->price}}<br>
-                        Max boeken lenen/reserveren: {{$abbonementen->books}}
+                        <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
+                        {{$abbonementen->text}}<br><br>
+                        <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} per maand</li><br>
+                        <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
+                        <div class="selected">Geselecteerd</div>
                     </div>
                 </label>
             @endif
@@ -35,8 +43,11 @@
             </div>
         @endforeach
     </div>
+    <div class="verder">
+        <button class="btn btn-block btn-primary" type="submit">Abbonement afsluiten</button>
+    </div>
 
-
+    </form>
 
 
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

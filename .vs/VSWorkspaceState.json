@@ -4,10 +4,11 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
+    "\\app\\Http\\Middleware",
     "\\app\\Models",
     "\\resources",
     "\\resources\\views"
   ],
-  "SelectedNode": "\\resources\\views\\account.blade.php",
+  "SelectedNode": "\\app\\Http\\Middleware\\CheckRol.php",
   "PreviewInSolutionExplorer": false
 }

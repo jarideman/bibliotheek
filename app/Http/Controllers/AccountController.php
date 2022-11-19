@@ -86,4 +86,79 @@ class AccountController extends Controller
             return redirect()->back();
         }
     }
+
+    public function afsluiten(Request $request) {
+        if(Session()->has('loginId')) {
+            $id = Session::get('loginId');
+            $lent_books = Lent_books::where('user_id', '=', $id)->count();
+            $reservations = Reservations::where('user_id', '=', $id)->count();
+            $reserveren = $lent_books + $reservations;
+            if ($request->checkbox1) {
+                $subscription_id= '1';
+                $subscription = Subscription::where('id', '=', $subscription_id)->first();
+                if($subscription->books >= $reserveren) {
+                    $update = User::where('id', '=', $id)->update(array('subscription_id' => $subscription_id));
+                    if ($update) {
+                        return redirect('/account')->with('success', 'Abbonement succesvol gewijzigd');
+                    }
+                    else {
+                        return redirect()->back()->with('success', 'Oeps er ging iets fout');
+                    }
+                }
+                else {
+                    return redirect()->back()->with('success', 'Te veel boeken geleend/gereserveerd voor dit abbonement');
+                }
+            }
+            elseif ($request->checkbox2) {
+                $subscription_id= '2';
+                $subscription = Subscription::where('id', '=', $subscription_id)->first();
+                if($subscription->books >= $reserveren) {
+                    $update = User::where('id', '=', $id)->update(array('subscription_id' => $subscription_id));
+                    if ($update) {
+                        return redirect('/account')->with('success', 'Abbonement succesvol gewijzigd');
+                    }
+                    else {
+                        return redirect()->back()->with('success', 'Oeps er ging iets fout');
+                    }
+                }
+                else {
+                    return redirect()->back()->with('success', 'Te veel boeken geleend/gereserveerd voor dit abbonement');
+                }
+            }
+            elseif ($request->checkbox3) {
+                $subscription_id= '3';
+                $subscription = Subscription::where('id', '=', $subscription_id)->first();
+                if($subscription->books >= $reserveren) {
+                    $update = User::where('id', '=', $id)->update(array('subscription_id' => $subscription_id));
+                    if ($update) {
+                        return redirect('/account')->with('success', 'Abbonement succesvol gewijzigd');
+                    }
+                    else {
+                        return redirect()->back()->with('success', 'Oeps er ging iets fout');
+                    }
+                }
+                else {
+                    return redirect()->back()->with('success', 'Te veel boeken geleend/gereserveerd voor dit abbonement');
+                }
+            }
+            else {
+                return redirect()->back()->with('success', 'Kies een van de abbonementen');
+            }
+        }
+        else {
+            return redirect()->back();
+        }
+    }
+
+    public function cancel(Request $request){
+        $book_id = $request->id;
+        $id = Session::get('loginId');
+        $reservation = Reservations::where('user_id', '=', $id)->where('book_id', '=', $book_id)->delete();
+        if ($reservation) {
+            return redirect()->back()->with('success', 'Reservatie gecanceld');
+        }
+        else {
+            return redirect()->back()->with('success', 'Oeps er ging iets fout');
+        }
+    }
 }

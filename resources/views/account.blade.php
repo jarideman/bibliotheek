@@ -12,16 +12,15 @@
     </style>
 
     <div class="accountinfo">
-        <br>
+        Abbonement: {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br><br>
         <div class="profilepicture">
             <img src='{{ asset('storage/images/user.png') }}' class="picture">
         </div><br>
-        {{$info->name}}
+        {{$info->name}}        
         {{$info->middlename}}
         {{$info->surname}}<br>
         {{$info->adres}}<br>
         {{$info->city}}<br>
-        Abbonement: {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br>
     </div>
 
 
@@ -34,6 +33,7 @@
             <th>Boek</th>
             <th>Reserverings datum</th>
             <th>Status</th>
+            <th>Cancel reservatie</th>
         </thead>
         <tbody>
         @foreach ($reservations as $reservation)
@@ -47,6 +47,7 @@
             @else
                 <td>Uitgeleend</td>
             @endif
+            <td><a href="cancel/{{$reservation->book->id}}" style="text-align:left !important;">Cancel reservatie</a></td>
         </tr>
         @endforeach
     @else

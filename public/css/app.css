@@ -461,6 +461,7 @@ label {
     color: black;
     height: 300px;
     border-radius: 20px;
+    padding: 10px;
 }
 
 input {
@@ -472,6 +473,29 @@ input {
     outline: 4px solid rgba(81, 203, 238, 1);
 }
 
+.selected {
+    display:none;
+}
+
+:checked + label .selected {
+    display: inherit !important;
+    font-style: italic;
+    font-weight: bold;
+}
+
 .count {
     display:none !important;
 }
+
+.abbonementinfo li {
+    text-align: left;
+}
+
+.verder {
+    text-align: center;
+    margin-top: 22px;
+}
+
+    .verder button.btn.btn-block.btn-primary {
+        margin-top:60px;
+    }
