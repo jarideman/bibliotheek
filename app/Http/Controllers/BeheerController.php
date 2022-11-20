@@ -40,10 +40,11 @@ class BeheerController extends Controller
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            return view('beheer', compact('account', 'user', 'return'));
+            $gebruikers = User::all();
+            return view('beheer', compact('account', 'user', 'return', 'gebruikers'));
         }
         else {
-            return view('beheer');
+            return redirect()->back();
         }
     }
 }

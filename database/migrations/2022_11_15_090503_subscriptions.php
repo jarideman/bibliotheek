@@ -18,6 +18,7 @@ class Subscriptions extends Migration
             $table->string('name');
             $table->string('price');
             $table->string('books');
+            $table->string('text')
             $table->timestamps();
         });
     }

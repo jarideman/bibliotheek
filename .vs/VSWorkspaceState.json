@@ -4,11 +4,12 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
-    "\\app\\Http\\Middleware",
     "\\app\\Models",
+    "\\database",
+    "\\database\\migrations",
     "\\resources",
     "\\resources\\views"
   ],
-  "SelectedNode": "\\app\\Http\\Middleware\\CheckRol.php",
+  "SelectedNode": "\\app\\Http\\Controllers\\BeheerController.php",
   "PreviewInSolutionExplorer": false
 }

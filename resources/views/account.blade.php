@@ -12,10 +12,16 @@
     </style>
 
     <div class="accountinfo">
-        Abbonement: {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br><br>
+        Abbonement:
+        @if ($abbonement)
+            {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br><br>
+        @else
+            <a href="abbonementwijzigen">afsluiten</a><br><br>
+        @endif
         <div class="profilepicture">
             <img src='{{ asset('storage/images/user.png') }}' class="picture">
         </div><br>
+        Klant id: {{$info->id}}<br>
         {{$info->name}}        
         {{$info->middlename}}
         {{$info->surname}}<br>

@@ -119,7 +119,6 @@ class BoekController extends Controller
         if(Session()->has('loginId')) {
             $id = Session::get('loginId');
             $reserveren = $this->CheckRol('reservate_book');
-
             if ($reserveren == true) {
                 $uitgeleend = Lent_books::where('book_id', '=', $request->id)->where('user_id', '=', $id)->first();
  
@@ -188,19 +187,24 @@ class BoekController extends Controller
                 if ($klant) {
                     $id = $klant->id;
                     $book_id = $request->book_id;
-                    $reserveren = $this->reserveren($id);
-                    if ($reserveren == true){
-                        $reservation = new Reservations();
-                        $reservation->book_id = $book_id;
-                        $reservation->user_id = $id;
-                        $reservation->reservation_date = date('d-m-Y');
-                        $res = $reservation->save();
-                        if($res){
-                            return redirect()->back()->with('success','Boek gereserveerd');
+                    if ($klant->subscription_id)  {
+                        $reserveren = $this->reserveren($id);
+                        if ($reserveren == true) {
+                            $reservation = new Reservations();
+                            $reservation->book_id = $book_id;
+                            $reservation->user_id = $id;
+                            $reservation->reservation_date = date('d-m-Y');
+                            $res = $reservation->save();
+                            if($res){
+                                return redirect()->back()->with('success','Boek gereserveerd');
+                            }
+                        }
+                        else {
+                            return redirect()->back()->with('success', 'Maximaal aantal boeken bereikt');
                         }
                     }
                     else {
-                        return redirect()->back()->with('success', 'Maximaal aantal boeken bereikt');
+                        return redirect()->back()->with('success', 'Klant kan geen boeken lenen');
                     }
                 }
                 else {

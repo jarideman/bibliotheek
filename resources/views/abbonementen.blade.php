@@ -18,26 +18,38 @@
         <div class="count">{{$i=1}}</div>
         @foreach ($abbonementen as $abbonementen)
             <div class="abbonement">
-            @if ($abbonementen->id == $abbonement->id)
-                <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name" checked><label for="checkbox{{$i}}">
-                    <div class="abbonementinfo">
-                        <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
-                        {{$abbonementen->text}}<br><br>
-                        <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} er maand</li><br>
-                        <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
-                        <div class="selected">Geselecteerd</div>
-                    </div>
-                </label>
-            @else 
-                <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name"><label for="checkbox{{$i}}">
-                    <div class="abbonementinfo">
-                        <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
-                        {{$abbonementen->text}}<br><br>
-                        <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} per maand</li><br>
-                        <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
-                        <div class="selected">Geselecteerd</div>
-                    </div>
-                </label>
+            @if ($abbonement)
+                @if ($abbonementen->id == $abbonement->id)
+                    <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name" checked><label for="checkbox{{$i}}">
+                        <div class="abbonementinfo">
+                            <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
+                            {{$abbonementen->text}}<br><br>
+                            <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} er maand</li><br>
+                            <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
+                            <div class="selected">Geselecteerd</div>
+                        </div>
+                    </label>
+                @else 
+                    <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name"><label for="checkbox{{$i}}">
+                        <div class="abbonementinfo">
+                            <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
+                            {{$abbonementen->text}}<br><br>
+                            <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} per maand</li><br>
+                            <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
+                            <div class="selected">Geselecteerd</div>
+                        </div>
+                    </label>
+                @endif
+            @else
+                    <input name="checkbox{{$i}}" id="checkbox{{$i}}" type="checkbox" class="name"><label for="checkbox{{$i}}">
+                        <div class="abbonementinfo">
+                            <b style="font-size: 20px;">{{$abbonementen->name}}</b><br><br>
+                            {{$abbonementen->text}}<br><br>
+                            <ul><li>Prijs van het abbonement: €{{$abbonementen->price}} per maand</li><br>
+                            <li>Max aantal boeken lenen/reserveren: {{$abbonementen->books}}</li></ul><br>
+                            <div class="selected">Geselecteerd</div>
+                        </div>
+                    </label>
             @endif
             <div class="count">{{$i++}}</div>
             </div>

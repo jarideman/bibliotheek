@@ -17,7 +17,7 @@ class Permissions extends Migration
             $table->id();
             $table->string('perm_id');
             $table->string('perm_desc');
-            $table->string('desc');
+            $table->string('description');
             $table->timestamps();
         });
     }

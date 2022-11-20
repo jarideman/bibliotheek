@@ -78,9 +78,16 @@ class AccountController extends Controller
             $id = Session::get('loginId');
             $info = User::where('id', '=', $id)->first();
             $subscription_id = $info->subscription_id;
-            $abbonement = Subscription::where('id', '=', $subscription_id)->first();
-            $abbonementen = Subscription::all();
-            return view('abbonementen', compact('account', 'user', 'return', 'abbonement', 'abbonementen'));
+            if ($subscription_id) {
+                $abbonement = Subscription::where('id', '=', $subscription_id)->first();
+                $abbonementen = Subscription::all();
+                return view('abbonementen', compact('account', 'user', 'return', 'abbonement', 'abbonementen'));
+            }
+            else {
+                $abbonement = '';
+                $abbonementen = Subscription::all();
+                return view('abbonementen', compact('account', 'user', 'return', 'abbonement', 'abbonementen'));
+            }
         }
         else {
             return redirect()->back();

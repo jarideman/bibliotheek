@@ -19,11 +19,15 @@
             <input type="text" placeholder="Klant id" value='@if (isset($name)){{$name}}@endif' name="user_id"><br>
             @if (isset($name))
                 @if (isset($boeken))
-                    @foreach ($boeken as $boeken)
-                        <input type="checkbox" value='{{$boeken->book->id}}' name='boek[]'> {{$boeken->book->title}}</input><br>
-                    @endforeach
-                    <style>.submit {display:none;}</style>
-                    <input type="submit" value="Terug brengen" class="returnbook">
+                    @if ($boeken == '[]')
+                        Geen geleende boeken<br>
+                    @else
+                        @foreach ($boeken as $boeken)
+                            <input type="checkbox" value='{{$boeken->book->id}}' name='boek[]'> {{$boeken->book->title}}</input><br>
+                        @endforeach
+                        <style>.submit {display:none;}</style>
+                        <input type="submit" value="Terug brengen" class="returnbook">
+                    @endif
                 @else
                     Geen geleende boeken
                 @endif
