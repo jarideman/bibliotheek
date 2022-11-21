@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Http\Controllers\CheckRolController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 use App\Mail\NotifyMail;
 use App\Models\User;
 use App\Models\Rols;
@@ -19,6 +20,7 @@ use Session;
 use Hash;
 use Mail;
 use Carbon\Carbon;
+
 
 class AccountController extends Controller
 {
@@ -39,6 +41,8 @@ class AccountController extends Controller
 
     public function account(Request $request){
         $id = Session::get('loginId');
+        $directory =  '/documenten/'. $id;
+        $storage = Storage::allFiles($directory);
         $info = User::where('id', '=', $id)->first();
         $boeken = Books::all();
         $reservations = Reservations::where('user_id', '=', $id)->with('book')->with('book.uitlenen')->paginate(5)->withQueryString();
@@ -51,8 +55,7 @@ class AccountController extends Controller
 
         $subscription_id = $info->subscription_id;
         $abbonement = Subscription::where('id', '=', $subscription_id)->first();
-
-        return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info', 'return', 'abbonement'));
+        return view('account', compact('account', 'user', 'reservations', 'lent_books', 'boeken', 'status', 'info', 'return', 'abbonement', 'storage'));
     }
 
     public function verlengen(Request $request) {
@@ -166,6 +169,26 @@ class AccountController extends Controller
         }
         else {
             return redirect()->back()->with('success', 'Oeps er ging iets fout');
+        }
+    }
+
+    public function fileUpload(Request $request){
+        $request->validate([
+            'file' => 'required',
+            'id' => 'required'
+        ]);
+        $id = $request->id;
+        $file = $request->file('file');
+        if($request->file()) {
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            if (preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-]/', $fileName)) {
+                return back()->with('success','Bestandsnaam mag niet de volgende symbolen bevatten \'^£$%&*()}{@#~?><>,|=_+¬-/');
+            }
+            else {
+                $path = $file->storeAs('public/images/'. $id, $fileName);
+                User::where('id', '=', $id)->update(array('foto' => $fileName));
+                return back()->with('success','Profiel foto geüploaded.');
+            }
         }
     }
 }

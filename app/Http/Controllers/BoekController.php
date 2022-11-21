@@ -111,7 +111,10 @@ class BoekController extends Controller
             return view('boek', compact('account', 'user', 'info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen', 'return', 'uitgeleend'));
         }
         else {
-            return view('boek', compact('info', 'status'));
+            $reserveren = false;
+            $reserverenKlant = false;
+            $uitlenen = false;
+            return view('boek', compact('info', 'status', 'reserveren', 'reserverenKlant', 'uitlenen'));
         }
     }
 

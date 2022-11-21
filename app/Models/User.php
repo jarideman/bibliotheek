@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Rols;
 
 class User extends Authenticatable
 {
@@ -16,6 +17,7 @@ class User extends Authenticatable
         'name',
         'middlename',
         'surname',
+        'foto',
         'email',
         'password',
         'adres',
@@ -26,5 +28,13 @@ class User extends Authenticatable
 
     public function subscription(){
         return $this->hasMany(Subscription::class, 'id');
+    }
+
+    public function rol(){
+        return $this->belongsTo(Rols::class);
+    }
+
+    public function abbonement(){
+        return $this->belongsTo(Subscription::class);
     }
 }

@@ -14,13 +14,29 @@
     <div class="accountinfo">
         Abbonement:
         @if ($abbonement)
-            {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br><br>
+            {{$abbonement->name}} (<a href="abbonementwijzigen">wijzigen</a>)<br>
         @else
             <a href="abbonementwijzigen">afsluiten</a><br><br>
         @endif
+        @if ($info->foto)
+        <div class="profilepicture">
+            <img src='{{ asset('storage/images/' .$info->id .'/'. $info->foto) }}' class="picture">
+        </div>
+        @else
         <div class="profilepicture">
             <img src='{{ asset('storage/images/user.png') }}' class="picture">
-        </div><br>
+        </div>
+        @endif
+        <form action="{{route('fileUpload')}}" method="post" enctype="multipart/form-data">
+            @csrf 
+                <input type="hidden" name="id" value='{{$info->id}}'>
+                <div class="custom-file">
+                    <input type="file" name="file" class="custom-file-input" id="chooseFile">
+                </div>
+                <button type="submit" name="submit" class="uploadfoto">
+                    Upload Foto
+                </button>
+        </form>
         Klant id: {{$info->id}}<br>
         {{$info->name}}        
         {{$info->middlename}}

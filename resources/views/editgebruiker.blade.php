@@ -11,16 +11,16 @@
         .beheer {text-decoration:underline !important;}
     </style>
     <div class="links">
-        <a href='/beheer' class="link" style='text-decoration:underline'>Alle gebruikers</a>
+        <a href='/beheer' class="link">Alle gebruikers</a>
         <a href='/newgebruiker' class="link">Nieuwe gebruiker</a>
-        <a href='/editgebruiker' class="link">Edit gebruiker</a>
+        <a href='/editgebruiker' class="link" style='text-decoration:underline'>Edit gebruiker</a>
         <a href='/deletegebruiker' class="link">Delete gebruiker</a>
         <a href='/abbonementen' class="link">Abbonementen</a>
         <a href='/meldingen' class="link">Meldingen</a>
     </div><br><br>
 
     <div class="beheerfield">
-        <h2>Alle gebruikers</h2>
+        <h2>Kies een gebruiker om te editen</h2>
     <table class="beheertable">
         <thead>
             <th>Naam</th>
@@ -29,7 +29,7 @@
         </thead>
         <tbody>
         @foreach ($gebruikers as $gebruiker)
-        <tr onclick="location.href='viewuser/{{$gebruiker->id}}'">
+        <tr onclick="location.href='edituser/{{$gebruiker->id}}'">
             <td>{{$gebruiker->name}}
             {{$gebruiker->middlename}}
             {{$gebruiker->surname}}</td>

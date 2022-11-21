@@ -20,26 +20,35 @@
     </div><br><br>
 
     <div class="beheerfield">
-        <h2>Alle gebruikers</h2>
-    <table class="beheertable">
-        <thead>
-            <th>Naam</th>
-            <th>Email</th>
-            <th>Rol</th>
-        </thead>
-        <tbody>
-        @foreach ($gebruikers as $gebruiker)
-        <tr onclick="location.href='viewuser/{{$gebruiker->id}}'">
-            <td>{{$gebruiker->name}}
-            {{$gebruiker->middlename}}
-            {{$gebruiker->surname}}</td>
-            <td>{{$gebruiker->email}}</td>
-            <td>{{$gebruiker->rol->name}}</td>
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
-    {{ $gebruikers->links('pagination') }}
+
+        <div class="beheerterug">
+            <a href="../beheer"><- Terug</a>
+        </div>
+
+        @if ($info->foto)
+        <div class="userpicture">
+            <img src='{{ asset('storage/images/' .$info->id .'/'. $info->foto) }}' class="picture">
+        </div>
+        @else
+        <div class="userpicture">
+            <img src='{{ asset('storage/images/user.png') }}' class="picture">
+        </div>
+        @endif
+
+        <div class="userinfo">
+            Name: {{$info->name}} {{$info->middlename}} {{$info->surname}}<br>
+            E-mail: {{$info->email}}<br>
+            Adres: {{$info->adres}}<br>
+            Postcode: {{$info->postcode}}<br>
+            Plaats: {{$info->city}}<br>
+            Rol: {{$info->rol->name}}<br>
+            @if ($info->date_employed)
+                Datum van dienst: {{$info->date_employed}}
+            @endif
+            @if ($info->subscription_id)
+                Abbonement: {{$abbonement->name}}
+            @endif
+        </div>
     </div>
 
 </body>

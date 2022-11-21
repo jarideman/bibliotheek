@@ -18,6 +18,7 @@ class Users extends Migration
             $table->string('name');
             $table->string('middlename');
             $table->string('surname');
+            $table->string('foto');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('adres');
