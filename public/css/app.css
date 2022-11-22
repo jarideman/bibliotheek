@@ -638,5 +638,6 @@ a.link:hover {
 }
 
 .beheerfield a {
-    text-decoration:none;
+    text-decoration: none;
+    float: left;
 }

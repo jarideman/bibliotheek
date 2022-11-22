@@ -301,10 +301,21 @@ class BoekController extends Controller
             if ($gebruiker) {
                 if (isset($request->boek)) {
                     foreach ($request->boek as $boek) {
-                        echo $boek;
-                        $lent_book = Lent_books::where('user_id', '=', $id)->where('book_id', '=', $boek)->first();
+                        $reservations = Reservations::where('book_id', $boek)->first();
+                        if ($reservations) {
+                            $user_id = $reservations->user_id;
+                            $boekname = Books::where('id', $boek)->first();
+                            $boekname = $boekname->title;
+                            $user = User::where('id', $user_id)->first();
+                            if($user){
+                                Mail::to($user->email)->send(new NotifyMail($boekname));
+                                User::where('email', '=', $user->email);
+                            }
+                        }
+
+                        $lent_book = Lent_books::where('user_id', '=', $id)->where('book_id', $boek)->first();
                         if ($lent_book) {
-                            Lent_books::where('user_id', '=', $id)->where('book_id', '=', $boek)->delete();
+                            Lent_books::where('user_id', '=', $id)->where('book_id', $boek)->delete();
                         }
                         else {}
                     }

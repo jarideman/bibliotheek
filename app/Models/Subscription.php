@@ -12,7 +12,8 @@ class Subscription extends Model
     protected $fillable = [
         'name',
         'price',
-        'books'
+        'books',
+        'text'
     ];
 
     public function user(){

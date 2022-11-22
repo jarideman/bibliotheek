@@ -15,29 +15,20 @@
         <a href='/newgebruiker' class="link">Nieuwe gebruiker</a>
         <a href='/editgebruiker' class="link">Edit gebruiker</a>
         <a href='/deletegebruiker' class="link">Delete gebruiker</a>
-        <a href='/abbonementen' class="link">Abbonementen</a>
-        <a href='/meldingen' class="link" style='text-decoration:underline'>Meldingen</a>
+        <a href='/abbonementen' class="link" style='text-decoration:underline'>Abbonementen</a>
+        <a href='/meldingen' class="link">Meldingen</a>
     </div><br><br>
 
     <div class="beheerfield">
-            <h2>Kies een melding om te editen</h2><a href="addmelding"><div class="addmelding">Add</div></a><a href="deletemelding" style="margin-left:10px;"><div class="addmelding">Delete</div></a>
-            <table class="beheertable">
-                <thead>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>Bericht</th>
-                </thead>
-                <tbody>
-                @foreach ($meldingen as $melding)
-                <tr onclick="location.href='editmelding/{{$melding->id}}'">
-                    <td>{{$melding->start_date}}</td>
-                    <td>{{$melding->end_date}}</td>
-                    <td>{{$melding->message}}</td>
-                </tr>
-                @endforeach
-        </tbody>
-        </table>
-        {{ $meldingen->links('pagination') }}
+        <form action="../updateabbonement" method="post" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name='id' value='{{$abbonementen->id}}'>
+            Naam: <input type="text" name="name" class="editform" value="{{$abbonementen->name}}" required><br>
+            Prijs: <input type="text" name="price" class="editform" value="{{$abbonementen->price}}" required><br>
+            Aantal boeken: <input type="text" name="books" class="editform" value="{{$abbonementen->books}}" required><br>
+            Text: <input type="text" name="text" class="editform" value="{{$abbonementen->text}}" required ><br><br>
+            <button type="submit" class="uploadfoto">Abbonement opslaan</button>
+        </form>
     </div>
 
 </body>

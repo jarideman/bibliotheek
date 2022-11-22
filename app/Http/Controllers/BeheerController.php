@@ -198,7 +198,7 @@ class BeheerController extends Controller
             }
             return back()->with('success','Gebruiker opgeslagen');
         }else{
-            return back()->with('failed', 'Something went wrong');
+            return back()->with('success', 'Something went wrong');
         }
     }
 
@@ -207,12 +207,95 @@ class BeheerController extends Controller
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            $abbonement = Subscription::all();
-            return view('abbonement', compact('account', 'user', 'return', 'abbonement'));
+            $abbonementen = Subscription::paginate(4);
+            return view('abbonement', compact('account', 'user', 'return', 'abbonementen'));
         }
         else {
             return redirect()->back();
         }
+    }
+
+    public function editabbonement(Request $request){
+        if(Auth::check()) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            $abbonementen = Subscription::where('id', $request->id)->first();
+            return view('editabbonement', compact('account', 'user', 'return', 'abbonementen'));
+        }
+        else {
+            return redirect()->back();
+        }
+    }
+
+    public function updateabbonement(Request $request){
+        if(Auth::check()) {
+            $update = Subscription::where('id', $request->id)->update($request->except('_token', 'id'));
+            if ($update){
+                return redirect('abbonementen')->with('success','Abbonement bewerkt');
+            }
+            else {
+                return redirect()->back()->with('success','Er ging iets fout');
+            }
+        }
+        else {
+            return redirect()->back();
+        }
+    }
+
+    public function addabbonement(){
+        if(Auth::check()) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            return view('addabbonement', compact('account', 'user', 'return'));
+        }
+        else {
+            return redirect()->back();
+        }   
+    }
+
+    public function newabbonement(Request $request) {
+        if(Auth::check()) {
+            $add = Subscription::create($request->all());
+            if ($add) {
+                return redirect('abbonementen')->with('success', 'Abbonement toegevoegd');
+            }
+            else {
+                return back()->with('success', 'Er ging iets fout');
+            }
+        }
+        else {
+            return redirect()->back();
+        }   
+    }
+
+    public function deleteabbonement(){
+        if(Auth::check()) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            $abbonementen = Subscription::paginate(4);
+            return view('deleteabbonement', compact('account', 'user', 'return', 'abbonementen'));
+        }
+        else {
+            return redirect()->back();
+        }      
+    }
+
+    public function delabbonement(Request $request) {
+        if(Auth::check()) {
+            $delete = Subscription::where('id', $request->id)->delete();
+            if ($delete){
+                return redirect('abbonementen')->with('success', 'Abbonement verwijderd');
+            }
+            else {
+                return back()->with('success', 'Er ging iets fout');
+            }
+        }
+        else {
+            return redirect()->back();
+        }  
     }
 
     public function meldingen(){
@@ -250,7 +333,7 @@ class BeheerController extends Controller
         if($bericht){
             return back()->with('success','Bericht opgeslagen');
         }else{
-            return back()->with('success', 'Something went wrong');
+            return back()->with('success', 'Er ging iets fout');
         }
     }
 
@@ -279,7 +362,35 @@ class BeheerController extends Controller
             return redirect('meldingen')->with('success', 'Bericht bewerkt');
         }
         else {
-            return back()->with('success', 'Something went wrong');
+            return back()->with('success', 'Er ging iets fout');
+        }
+    }
+
+    public function deletemelding(Request $request) {
+        if(Auth::check()) {
+            $account = $this->CheckRol('view_account');
+            $user = $this->CheckRol('admin');
+            $return = $this->CheckRol('return_book');
+            $meldingen = Notifications::paginate(4);
+            return view('deletemelding', compact('account', 'user', 'return', 'meldingen'));
+        }
+        else {
+            return redirect()->back();
+        }
+    }
+
+    public function meldingdelete(Request $request){
+        if(Auth::check()) {
+            $delete = Notifications::where('id', $request->id)->delete();
+            if ($delete){
+                return redirect('meldingen')->with('success', 'Melding verwijderd');
+            }
+            else {
+                return back()->with('success', 'Er ging iets fout');
+            }
+        }
+        else {
+            return redirect()->back();
         }
     }
 }

@@ -40,12 +40,20 @@ Route::get('/deleteuser/{id}', [BeheerController::class,'deleteuser'])->middlewa
 Route::post('/delete',[BeheerController::class, 'delete'])->middleware('CheckRol:admin');;
 
 Route::get('/abbonementen', [BeheerController::class,'abbonement'])->middleware('CheckRol:admin');
+Route::get('/editabbonement/{id}', [BeheerController::class,'editabbonement'])->middleware('CheckRol:admin');
+Route::post('/updateabbonement', [BeheerController::class,'updateabbonement'])->middleware('CheckRol:admin');
+Route::get('/addabbonement', [BeheerController::class,'addabbonement'])->middleware('CheckRol:admin');
+Route::post('/newabbonement', [BeheerController::class,'newabbonement'])->middleware('CheckRol:admin');
+Route::get('/deleteabbonement', [BeheerController::class,'deleteabbonement'])->middleware('CheckRol:admin');
+Route::get('/delabbonement/{id}', [BeheerController::class,'delabbonement'])->middleware('CheckRol:admin');
 
 Route::get('/meldingen', [BeheerController::class,'meldingen'])->middleware('CheckRol:admin');
 Route::get('/addmelding', [BeheerController::class,'addmelding'])->middleware('CheckRol:admin');
 Route::post('/newmelding/', [BeheerController::class,'newmelding'])->middleware('CheckRol:admin');
 Route::get('/editmelding/{id}', [BeheerController::class,'editmelding'])->middleware('CheckRol:admin');
 Route::post('/updatemelding', [BeheerController::class,'updatemelding'])->middleware('CheckRol:admin');
+Route::get('/deletemelding', [BeheerController::class,'deletemelding'])->middleware('CheckRol:admin');
+Route::get('/deletemelding/{id}', [BeheerController::class,'meldingdelete'])->middleware('CheckRol:admin');
 
 /*BoekController*/
 Route::get('/boeken', [BoekController::class,'boeken']);

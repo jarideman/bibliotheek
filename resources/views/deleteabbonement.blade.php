@@ -15,29 +15,32 @@
         <a href='/newgebruiker' class="link">Nieuwe gebruiker</a>
         <a href='/editgebruiker' class="link">Edit gebruiker</a>
         <a href='/deletegebruiker' class="link">Delete gebruiker</a>
-        <a href='/abbonementen' class="link">Abbonementen</a>
-        <a href='/meldingen' class="link" style='text-decoration:underline'>Meldingen</a>
+        <a href='/abbonementen' class="link" style='text-decoration:underline'>Abbonementen</a>
+        <a href='/meldingen' class="link">Meldingen</a>
     </div><br><br>
 
     <div class="beheerfield">
-            <h2>Kies een melding om te editen</h2><a href="addmelding"><div class="addmelding">Add</div></a><a href="deletemelding" style="margin-left:10px;"><div class="addmelding">Delete</div></a>
+            <h2>Kies een abbonement om te verwijderen</h2>
             <table class="beheertable">
                 <thead>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>Bericht</th>
+                    <th>Naam</th>
+                    <th>Prijs</th>
+                    <th>Aantal boeken</th>
+                    <th>Text</th>
                 </thead>
                 <tbody>
-                @foreach ($meldingen as $melding)
-                <tr onclick="location.href='editmelding/{{$melding->id}}'">
-                    <td>{{$melding->start_date}}</td>
-                    <td>{{$melding->end_date}}</td>
-                    <td>{{$melding->message}}</td>
+                @foreach ($abbonementen as $abbonement)
+                <tr onclick="location.href='delabbonement/{{$abbonement->id}}'">
+                    <td>{{$abbonement->name}}</td>
+                    <td>{{$abbonement->price}}</td>
+                    <td>{{$abbonement->books}}</td>
+                    <td>{{$abbonement->text}}</td>
                 </tr>
                 @endforeach
         </tbody>
         </table>
-        {{ $meldingen->links('pagination') }}
+        {{ $abbonementen->links('pagination') }}
+
     </div>
 
 </body>

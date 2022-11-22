@@ -20,7 +20,7 @@
     </div><br><br>
 
     <div class="beheerfield">
-            <h2>Kies een melding om te editen</h2><a href="addmelding"><div class="addmelding">Add</div></a><a href="deletemelding" style="margin-left:10px;"><div class="addmelding">Delete</div></a>
+            <h2>Kies een Melding om te verwijderen</h2>
             <table class="beheertable">
                 <thead>
                     <th>Start date</th>
@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                 @foreach ($meldingen as $melding)
-                <tr onclick="location.href='editmelding/{{$melding->id}}'">
+                <tr onclick="location.href='deletemelding/{{$melding->id}}'">
                     <td>{{$melding->start_date}}</td>
                     <td>{{$melding->end_date}}</td>
                     <td>{{$melding->message}}</td>
@@ -38,6 +38,7 @@
         </tbody>
         </table>
         {{ $meldingen->links('pagination') }}
+
     </div>
 
 </body>
