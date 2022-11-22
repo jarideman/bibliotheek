@@ -7,7 +7,7 @@
     <a href="/beheer" class="beheer">Beheer</a>
     <a href="/logout" class="logout">Uitloggen</a>
 </div>
-    @if(Session::has('loginId'))
+    @if(Auth::check())
         @if ($account == true) 
             <style>.account {display:revert !important;}</style>
         @endif

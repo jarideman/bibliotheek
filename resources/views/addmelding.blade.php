@@ -20,24 +20,14 @@
     </div><br><br>
 
     <div class="beheerfield">
-            <h2>Kies een melding om te editen</h2><a href="addmelding"><div class="addmelding">Add</div></a>
-            <table class="beheertable">
-                <thead>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>Bericht</th>
-                </thead>
-                <tbody>
-                @foreach ($meldingen as $melding)
-                <tr onclick="location.href='editmelding/{{$melding->id}}'">
-                    <td>{{$melding->start_date}}</td>
-                    <td>{{$melding->end_date}}</td>
-                    <td>{{$melding->message}}</td>
-                </tr>
-                @endforeach
-        </tbody>
-        </table>
-        {{ $meldingen->links('pagination') }}
+        <h2>Nieuwe melding</h2><br>
+        <form action="../newmelding" method="post" enctype="multipart/form-data">
+            @csrf
+            Start datum: <input type="text" name="start_date" class="editform" placeholder="dd-mm-yyyy" required><br>
+            Eind datum: <input type="text" name="end_date" class="editform" placeholder="dd-mm-yyyy" required><br>
+            Bericht: <input type="text" name="message" class="editform" required><br><br>
+            <button type="submit" name="submit" class="uploadfoto">Melding opslaan</button>
+        </form>
     </div>
 
 </body>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CheckRolController;
 use App\Mail\NotifyMail;
 use App\Models\User;
@@ -23,7 +24,7 @@ use Carbon\Carbon;
 class BoekController extends Controller
 {
     public function CheckRol($permdesc){
-        $data = User::where('id', '=', Session::get('loginId'))->first();
+        $data = User::where('id', Auth::id())->first();
         $rol_id = $data->rol_id;
         $permissions = Permissions::all()->pluck('perm_id');
         foreach ($permissions as $permissions) {
@@ -58,7 +59,7 @@ class BoekController extends Controller
 
 
         $genre = Books::distinct()->pluck('genre');
-        if(Session()->has('loginId')) {
+        if(Auth::check()) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
@@ -93,8 +94,8 @@ class BoekController extends Controller
         if ($count == 0) {
             return redirect()->back();
         }
-        if(Session()->has('loginId')) {
-            $id = Session::get('loginId');
+        if(Auth::check()) {
+            $id = Auth::id();
             $uitgeleend = Lent_books::where('book_id', '=', $request->id)->where('user_id', '=', $id)->first();
             $reserveren = $this->CheckRol('reservate_book');
             if ($reserveren == true) {
@@ -119,8 +120,8 @@ class BoekController extends Controller
     }
 
     public function reservate_boek(Request $request) {
-        if(Session()->has('loginId')) {
-            $id = Session::get('loginId');
+        if(Auth::check()) {
+            $id = Auth::id();
             $reserveren = $this->CheckRol('reservate_book');
             if ($reserveren == true) {
                 $uitgeleend = Lent_books::where('book_id', '=', $request->id)->where('user_id', '=', $id)->first();

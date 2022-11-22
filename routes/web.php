@@ -29,6 +29,7 @@ Route::get('/beheer', [BeheerController::class,'beheer'])->middleware('CheckRol:
 Route::get('/viewuser/{id}', [BeheerController::class,'viewuser'])->middleware('CheckRol:admin');
 
 Route::get('/newgebruiker', [BeheerController::class,'newgebruiker'])->middleware('CheckRol:admin');
+Route::post('/new', [BeheerController::class,'new'])->middleware('CheckRol:admin');
 
 Route::get('/editgebruiker', [BeheerController::class,'editgebruiker'])->middleware('CheckRol:admin');
 Route::get('/edituser/{id}', [BeheerController::class,'edituser'])->middleware('CheckRol:admin');
@@ -39,7 +40,12 @@ Route::get('/deleteuser/{id}', [BeheerController::class,'deleteuser'])->middlewa
 Route::post('/delete',[BeheerController::class, 'delete'])->middleware('CheckRol:admin');;
 
 Route::get('/abbonementen', [BeheerController::class,'abbonement'])->middleware('CheckRol:admin');
+
 Route::get('/meldingen', [BeheerController::class,'meldingen'])->middleware('CheckRol:admin');
+Route::get('/addmelding', [BeheerController::class,'addmelding'])->middleware('CheckRol:admin');
+Route::post('/newmelding/', [BeheerController::class,'newmelding'])->middleware('CheckRol:admin');
+Route::get('/editmelding/{id}', [BeheerController::class,'editmelding'])->middleware('CheckRol:admin');
+Route::post('/updatemelding', [BeheerController::class,'updatemelding'])->middleware('CheckRol:admin');
 
 /*BoekController*/
 Route::get('/boeken', [BoekController::class,'boeken']);

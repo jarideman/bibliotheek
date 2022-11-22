@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use App\Mail\NotifyMail;
@@ -25,7 +26,7 @@ use Carbon\Carbon;
 class AccountController extends Controller
 {
     public function CheckRol($permdesc){
-        $data = User::where('id', '=',Session::get('loginId'))->first();
+        $data = User::where('id', '=', Auth::id())->first();
         $rol_id = $data->rol_id;
         $permissions = Permissions::all()->pluck('perm_id');
         foreach ($permissions as $permissions) {
@@ -40,7 +41,7 @@ class AccountController extends Controller
     }
 
     public function account(Request $request){
-        $id = Session::get('loginId');
+        $id = Auth::id();
         $directory =  '/documenten/'. $id;
         $storage = Storage::allFiles($directory);
         $info = User::where('id', '=', $id)->first();
@@ -60,7 +61,7 @@ class AccountController extends Controller
 
     public function verlengen(Request $request) {
         $book_id = $request->id;
-        $id = Session::get('loginId');
+        $id = Auth::id();
         $book = Lent_books::where('book_id', '=', $book_id)->where('user_id', '=', $id)->first();
 
         $carbon = new Carbon($book->return_date);
@@ -74,11 +75,11 @@ class AccountController extends Controller
     }
 
     public function abbonementwijzigen() {
-        if(Session()->has('loginId')) {
+        if (Auth::check()) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            $id = Session::get('loginId');
+            $id = Auth::id();
             $info = User::where('id', '=', $id)->first();
             $subscription_id = $info->subscription_id;
             if ($subscription_id) {
@@ -98,8 +99,8 @@ class AccountController extends Controller
     }
 
     public function afsluiten(Request $request) {
-        if(Session()->has('loginId')) {
-            $id = Session::get('loginId');
+        if(Auth::check()) {
+            $id = Auth::id();
             $lent_books = Lent_books::where('user_id', '=', $id)->count();
             $reservations = Reservations::where('user_id', '=', $id)->count();
             $reserveren = $lent_books + $reservations;
@@ -162,7 +163,7 @@ class AccountController extends Controller
 
     public function cancel(Request $request){
         $book_id = $request->id;
-        $id = Session::get('loginId');
+        $id = Auth::id();
         $reservation = Reservations::where('user_id', '=', $id)->where('book_id', '=', $book_id)->delete();
         if ($reservation) {
             return redirect()->back()->with('success', 'Reservatie gecanceld');

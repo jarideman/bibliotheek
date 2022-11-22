@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Rollen;
 use App\Models\Permissions;
@@ -22,8 +23,8 @@ class CheckRol
      */
     public function handle(Request $request, Closure $next, $permdesc)
     {
-        if(Session()->has('loginId')){
-            $data = User::where('id', '=',Session::get('loginId'))->first();
+        if(Auth::check()){
+            $data = User::where('id', Auth::id())->first();
             $rol_id = $data->rol_id;
             $permissions = Permissions::all()->pluck('perm_id');
             foreach ($permissions as $permissions) {

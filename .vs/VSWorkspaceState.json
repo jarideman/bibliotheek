@@ -6,8 +6,9 @@
     "\\app\\Http\\Controllers",
     "\\app\\Models",
     "\\resources",
-    "\\resources\\views"
+    "\\resources\\views",
+    "\\routes"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\AccountController.php",
+  "SelectedNode": "\\resources\\views\\edituser.blade.php",
   "PreviewInSolutionExplorer": false
 }

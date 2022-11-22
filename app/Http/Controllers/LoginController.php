@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CheckRolController;
 use App\Mail\NotifyMail;
 use App\Models\User;
@@ -24,7 +25,7 @@ class LoginController extends Controller
         $date = date('d-m-Y');
         $meldingen = Notifications::where('start_date', '<=', $date)->where('end_date', '>=', $date)->get();
         $newBooks = Books::orderBy('purchase_date', 'DESC')->take(10)->get();
-        if(Session()->has('loginId')) {
+        if(Auth::check()) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
@@ -36,7 +37,7 @@ class LoginController extends Controller
     }
 
     public function login(){
-        if(Session()->has('loginId')) {
+        if(Auth::check()) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
@@ -48,15 +49,13 @@ class LoginController extends Controller
     }
 
     public function loginUser(Request $request){
-        $request->validate([
+        $validated = $request->validate([
             'email'=>'required|email',
             'password'=>'required'
         ]);
         $user = User::where('email', '=', $request->email)->first();
         if($user){
-            if(Hash::check($request->password, $user->password)){
-                $request->session()->put('loginId',$user->id);
-                $request->session()->put('rol', $user->rol_id);
+            if(Auth::attempt($validated)){
                 return redirect('/');
             }else{
                 return back()->with('failed', 'Password is incorrect');
@@ -67,7 +66,7 @@ class LoginController extends Controller
     }
 
     public function registration(){
-        if(Session()->has('loginId')) {
+        if(Auth::check()) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
@@ -106,12 +105,12 @@ class LoginController extends Controller
     }
 
     public function logout(){
-        Session::pull('loginId');
+        Auth::logout();
         return redirect('/');
     }
 
     public function CheckRol($permdesc){
-        $data = User::where('id', '=',Session::get('loginId'))->first();
+        $data = User::where('id', Auth::id())->first();
         $rol_id = $data->rol_id;
         $permissions = Permissions::all()->pluck('perm_id');
         foreach ($permissions as $permissions) {

@@ -303,23 +303,26 @@ ul.pagination.justify-content-center {
 
 .picture {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 300px;
     display: block;
     object-fit: cover;
-    border-radius: 50%;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .profilepicture {
-    width:80%;
-    text-align:center;
-    margin-left:auto;
-    margin-right:auto;
-    background:white;
-    border-radius:50%;
+    width: 80%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background: white;
+    border-radius: 50%;
+    overflow:hidden;
 }
 
 .alert.alert-success {
     width: 300px;
+    max-height:300px;
     float: right;
     text-align: center;
     margin-right: 2%;
@@ -552,7 +555,7 @@ a.link:hover {
     color: black;
     padding: 20px;
     text-align: center;
-    height: 65%;
+    height: 70%;
     margin-top: 2%;
 }
 
@@ -617,4 +620,23 @@ a.link:hover {
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: 0.375rem;
+}
+
+.bestand {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.addmelding {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid black;
+    width: fit-content;
+    border-radius: 20%;
+    background: #0d6efd;
+    color:white;
+}
+
+.beheerfield a {
+    text-decoration:none;
 }
