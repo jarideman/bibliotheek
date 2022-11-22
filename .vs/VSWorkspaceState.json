@@ -1,14 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\app",
-    "\\app\\Http",
-    "\\app\\Http\\Controllers",
-    "\\app\\Models",
-    "\\resources",
-    "\\resources\\views",
-    "\\routes"
+    "\\database",
+    "\\database\\migrations",
+    "\\resources\\views"
   ],
-  "SelectedNode": "\\resources\\views\\edituser.blade.php",
+  "SelectedNode": "\\database\\migrations\\2022_11_15_090534_notifications.php",
   "PreviewInSolutionExplorer": false
 }

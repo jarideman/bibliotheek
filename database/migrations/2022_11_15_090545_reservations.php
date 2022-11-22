@@ -15,8 +15,8 @@ class Reservations extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('book_id');
-            $table->string('user_id');
+            $table->integer('book_id');
+            $table->integer('user_id');
             $table->string('reservation_date');
             $table->timestamps();
         });

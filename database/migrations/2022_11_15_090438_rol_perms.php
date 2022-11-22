@@ -15,8 +15,8 @@ class RolPerms extends Migration
     {
         Schema::create('rol_perms', function (Blueprint $table) {
             $table->id();
-            $table->string('rol_id');
-            $table->string('perm_id');
+            $table->integer('rol_id');
+            $table->integer('perm_id');
             $table->timestamps();
         });
     }

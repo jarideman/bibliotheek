@@ -15,11 +15,11 @@ class LentBooks extends Migration
     {
         Schema::create('lent_books', function (Blueprint $table) {
             $table->id();
-            $table->string('book_id');
-            $table->string('user_id');
+            $table->integer('book_id');
+            $table->integer('user_id');
             $table->string('lent_date');
             $table->string('return_date');
-            $table->string('times_extended');
+            $table->integer('times_extended');
             $table->timestamps();
         });
     }

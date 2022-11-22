@@ -18,6 +18,7 @@ class Notifications extends Migration
             $table->string('start_date');
             $table->string('end_date');
             $table->string('message');
+            $table->integer('rol_id')->nullable();
             $table->timestamps();
         });
     }

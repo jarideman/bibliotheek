@@ -16,8 +16,8 @@ class Subscriptions extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('price');
-            $table->string('books');
+            $table->integer('price');
+            $table->integer('books');
             $table->string('text');
             $table->timestamps();
         });
