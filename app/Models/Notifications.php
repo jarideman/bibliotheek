@@ -14,4 +14,8 @@ class Notifications extends Model
         'end_date',
         'message'
     ];
+
+    public function rol(){
+        return $this->belongsTo(Rols::class);
+    }
 }

@@ -25,7 +25,14 @@
             @csrf
             Start datum: <input type="text" name="start_date" class="editform" placeholder="dd-mm-yyyy" required><br>
             Eind datum: <input type="text" name="end_date" class="editform" placeholder="dd-mm-yyyy" required><br>
-            Bericht: <input type="text" name="message" class="editform" required><br><br>
+            Bericht: <input type="text" name="message" class="editform" required><br>
+            Rol: <select class="editform" name="rol_id">
+            <option value="">iedereen</option><br>
+            @foreach ($rollen as $rol) 
+                    <option value="{{ $rol->id }}">{{ $rol->name }}</option><br>
+            @endforeach
+            </select><br>
+            <br>
             <button type="submit" name="submit" class="uploadfoto">Melding opslaan</button>
         </form>
     </div>

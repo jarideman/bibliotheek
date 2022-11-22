@@ -5,6 +5,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BoekController;
 use App\Http\Controllers\BeheerController;
 use App\Http\Controllers\AccountController;
+use App\Mail\BoekVerlopen;
+use App\Jobs\CheckLentBooks;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,8 +72,3 @@ Route::get('/cancel/{id}', [AccountController::class,'cancel'])->middleware('Che
 Route::get('/abbonementwijzigen',[AccountController::class,'abbonementwijzigen'])->middleware('CheckRol:view_subscriptions');
 Route::get('/afsluiten',[AccountController::class,'afsluiten'])->middleware('CheckRol:view_subscriptions');
 Route::post('/upload-file', [AccountController::class, 'fileUpload'])->name('fileUpload');
-
-
-
-
-

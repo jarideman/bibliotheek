@@ -303,7 +303,7 @@ class BeheerController extends Controller
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            $meldingen = Notifications::paginate(4);
+            $meldingen = Notifications::with('rol')->paginate(4);
             return view('meldingen', compact('account', 'user', 'return', 'meldingen'));
         }
         else {
@@ -316,7 +316,8 @@ class BeheerController extends Controller
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            return view('addmelding', compact('account', 'user', 'return'));
+            $rollen = Rols::all();
+            return view('addmelding', compact('account', 'user', 'return', 'rollen'));
         }
         else {
             return redirect()->back();
@@ -329,9 +330,9 @@ class BeheerController extends Controller
             'end_date'=>'required',
             'message'=>'required'
         ]);
-        $bericht = Notifications::create($request);
+        $bericht = Notifications::create($request->all());
         if($bericht){
-            return back()->with('success','Bericht opgeslagen');
+            return redirect('meldingen')->with('success','Bericht opgeslagen');
         }else{
             return back()->with('success', 'Er ging iets fout');
         }
@@ -343,7 +344,8 @@ class BeheerController extends Controller
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
             $info = Notifications::where('id', '=', $request->id)->first();
-            return view('editmelding', compact('account', 'user', 'return', 'info'));
+            $rollen = Rols::all();
+            return view('editmelding', compact('account', 'user', 'return', 'info', 'rollen'));
         }
         else {
             return redirect()->back();

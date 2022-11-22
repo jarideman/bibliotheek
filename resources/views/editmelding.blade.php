@@ -27,6 +27,17 @@
             Start datum: <input type="text" name="start_date" class="editform" value="{{ $info->start_date }}"><br>
             Eind datum: <input type="text" name="end_date" class="editform" value="{{ $info->end_date }}"><br>
             Bericht: <input type="text" name="message" class="editform" value="{{ $info->message }}"><br>
+            Rol: <select class="editform" name="rol_id">
+            <option value="">iedereen</option><br>
+            @foreach ($rollen as $rol) 
+                @if ($rol->id==$info->rol_id)
+                    <option value="{{ $rol->id }}"selected>{{ $rol->name }}</option><br>
+                @else 
+                    <option value="{{ $rol->id }}">{{ $rol->name }}</option><br>
+                @endif
+            @endforeach
+            </select><br>
+
             <input type="submit" value="Opslaan" class='deletesubmit'>
         </form>
     </div>

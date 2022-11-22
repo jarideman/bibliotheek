@@ -26,6 +26,7 @@
                     <th>Start date</th>
                     <th>End date</th>
                     <th>Bericht</th>
+                    <th>Rol</th>
                 </thead>
                 <tbody>
                 @foreach ($meldingen as $melding)
@@ -33,6 +34,11 @@
                     <td>{{$melding->start_date}}</td>
                     <td>{{$melding->end_date}}</td>
                     <td>{{$melding->message}}</td>
+                    @if ($melding->rol_id)
+                        <td>{{$melding->rol->name}}</td>
+                    @else
+                        <td>iedereen</td>
+                    @endif
                 </tr>
                 @endforeach
         </tbody>

@@ -23,13 +23,14 @@ class LoginController extends Controller
 {
     public function index(){
         $date = date('d-m-Y');
-        $meldingen = Notifications::where('start_date', '<=', $date)->where('end_date', '>=', $date)->get();
+        $meldingen = Notifications::where('start_date', '<=', $date)->where('end_date', '>=', $date)->whereNull('rol_id')->get();
         $newBooks = Books::orderBy('purchase_date', 'DESC')->take(10)->get();
         if(Auth::check()) {
             $account = $this->CheckRol('view_account');
             $user = $this->CheckRol('admin');
             $return = $this->CheckRol('return_book');
-            return view('index', compact('account', 'user', 'meldingen', 'newBooks', 'return'));
+            $melding = Notifications::where('start_date', '<=', $date)->where('end_date', '>=', $date)->where('rol_id', Auth::user()->rol_id)->get();
+            return view('index', compact('account', 'user', 'meldingen', 'melding', 'newBooks', 'return'));
         }
         else {
             return view('index', compact('meldingen', 'newBooks'));

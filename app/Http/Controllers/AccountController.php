@@ -21,6 +21,8 @@ use Session;
 use Hash;
 use Mail;
 use Carbon\Carbon;
+use App\Jobs\CheckLentBooks;
+use App\Jobs\BoekTeLaat;
 
 
 class AccountController extends Controller
@@ -189,6 +191,28 @@ class AccountController extends Controller
                 $path = $file->storeAs('public/images/'. $id, $fileName);
                 User::where('id', '=', $id)->update(array('foto' => $fileName));
                 return back()->with('success','Profiel foto geüploaded.');
+            }
+        }
+    }
+
+    public function check_boeken(){
+        $date = date('d-m-Y');
+        $carbon = new Carbon($date);
+        $return_date = $carbon->addDays(4)->format('d-m-Y');
+        $books = Lent_books::all();
+        foreach ($books as $books){
+            $user = User::where('id', $books->user_id)->first();
+            $mail = $user->email;
+            $test = new Carbon($books->return_date);
+            $test2 = $test->format('d-m-Y');
+            $timeStamp = strtotime($test2);
+            $timeStamp2 = strtotime($return_date);
+            $timeStamp3 = strtotime($date);
+            if ($timeStamp == $timeStamp3){
+                BoekTeLaat::dispatch($mail);
+            }
+            elseif ($timeStamp <= $timeStamp2) {
+                CheckLentBooks::dispatch($mail);
             }
         }
     }

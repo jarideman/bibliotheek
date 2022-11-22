@@ -19,8 +19,14 @@
         @else
             @foreach ($meldingen as $meldingen)
                 {{$meldingen->start_date}}:
-                {{$meldingen->message}}
+                {{$meldingen->message}}<br>
             @endforeach
+            @if(Auth::check())
+                    @foreach ($melding as $melding)
+                        {{$melding->start_date}}:
+                        {{$melding->message}}<br>
+                    @endforeach
+            @endif
         @endif
     </div>
 
